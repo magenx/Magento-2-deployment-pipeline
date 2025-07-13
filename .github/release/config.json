@@ -39,7 +39,7 @@
 	  "extra-files": [
         {
           "type": "json",
-          "path": ".github/.release-please-manifest-prerelease.json",
+          "path": ".github/release/prerelease-manifest.json",
           "jsonpath": "$[\".\"]"
         }
       ]
