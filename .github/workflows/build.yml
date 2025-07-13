@@ -37,7 +37,7 @@ jobs:
           composer_install: true
           composer_auth: "${{ secrets.COMPOSER_AUTH }}"
           composer_install_options: "--no-dev --no-ansi --no-interaction --no-progress --no-suggest"
-          composer_autoload_options: "--optimize-autoloader --apcu-autoloader --classmap-authoritative"
+          composer_autoload_options: "--optimize-autoloader --classmap-authoritative"
           setup_compile_options: ""
           static_content_deploy: true
           static_content_deploy_options: ""
