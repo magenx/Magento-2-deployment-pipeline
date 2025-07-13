@@ -62,7 +62,7 @@ jobs:
           while read module; do
             composer require "$module"
           done < require.txt
-          composer install --no-dev --no-interaction 
+          composer install --no-dev --no-ansi --no-interaction --no-progress --no-suggest
 
       - name: Composer lock diff and Magento module extract
         id: composer-lock-diff
@@ -95,12 +95,11 @@ jobs:
         id: compile
         uses: ./.github/actions/setup-di-compile
         with:
-          composer_install: false
           composer_auth: ""
-          composer_options: ""
-          setup_compile_options: ""
-          static_content_deploy: false
-          static_content_deploy_options: ""
+          composer_install: ""
+          composer_autoload: ""
+          setup_di_compile: "-n -no-ansi"
+          static_content_deploy: ""
           debug_command: "bin/magento"
 
       - name: Check for config.php changes
