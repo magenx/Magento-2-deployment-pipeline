@@ -34,13 +34,11 @@ jobs:
         id: compile
         uses: ./.github/actions/setup-di-compile
         with:
-          composer_install: true
           composer_auth: "${{ secrets.COMPOSER_AUTH }}"
-          composer_install_options: "--no-dev --no-ansi --no-interaction --no-progress --no-suggest"
-          composer_autoload_options: "--optimize-autoloader --classmap-authoritative"
-          setup_compile_options: ""
-          static_content_deploy: true
-          static_content_deploy_options: ""
+          composer_install: "--no-dev --no-ansi --no-interaction --no-progress --no-suggest"
+          composer_autoload: "--optimize-autoloader --classmap-authoritative"
+          setup_di_compile: "-n --no-ansi"
+          static_content_deploy: "-f -n --no-ansi -j $(nproc)"
           debug_command: "bin/magento"
 
       - name: Set version for complete build
