@@ -3,43 +3,32 @@ author: "MagenX"
 description: "Check if composer installation with setup-di-compile works without errors"
 
 inputs:
-  composer_install:
-    description: 'Enable composer installation'
-    required: true
-    default: true
   composer_auth:
     description: 'Composer auth'
-    required: true
-  composer_install_options:
-    description: 'Additional composer installation options'
     required: false
     default: ''
-  composer_autoload_options:
-    description: 'Additional composer autoload options'
+  composer_install:
+    description: 'Enable composer installation with options'
     required: false
     default: ''
-  setup_compile_options:
-    description: 'Additional Magento compile options'
+  composer_autoload:
+    description: 'Enable composer autoload with options'
+    required: false
+    default: ''
+  setup_di_compile:
+    description: 'Enable Magento di compile with options'
     required: false
     default: ''
   static_content_deploy:
-    description: 'Enable Magento static content deploy command'
-    required: false
-    default: false
-  static_content_deploy_options:
-    description: 'Additional Magento static deploy parameters'
-    required: false
-    default: ''
-  hyva_theme:
-    description: 'Enable HyvaTheme css build command'
+    description: 'Enable Magento static content deploy with options'
     required: false
     default: false
   hyva_theme_path:
-    description: 'Path to HyvaTheme directory'
+    description: 'Enable HyvaTheme css generation with path to theme'
     required: false
     default: ''
   debug_command:
-    description: 'Additional Magento command debug options'
+    description: 'Additional Magento command to debug'
     required: false
     default: ''
 
@@ -68,31 +57,32 @@ runs:
   steps:
     - name: Composer install modules and updates
       id: composer-install
-      if: ${{ inputs.composer_install == 'true' }}
+      if: ${{ inputs.composer_install != '' }}
       env:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
       shell: bash
       run: |
-        composer install ${{ inputs.composer_install_options }}
+        composer install ${{ inputs.composer_install }}
         [ $? -eq 0 ] && echo "composer_install_status=success" >> $GITHUB_OUTPUT || echo "composer_install_status=failure" >> $GITHUB_OUTPUT
 
     - name: Run setup di compile
       id: setup-di-compile
       shell: bash
       run: |
-        bin/magento setup:di:compile -n ${{ inputs.setup_compile_options }}
+        bin/magento setup:di:compile ${{ inputs.setup_di_compile }}
         [ $? -eq 0 ] && echo "setup_di_compile_status=success" >> $GITHUB_OUTPUT || echo "setup_di_compile_status=failure" >> $GITHUB_OUTPUT
 
     - name: Composer classmap optimization
       id: composer-autoload
+      if: ${{ inputs.composer_autoload != '' }}
       shell: bash
       run: |
-        composer dump-autoload ${{ inputs.composer_autoload_options }}
+        composer dump-autoload ${{ inputs.composer_autoload }}
         [ $? -eq 0 ] && echo "composer_autoload_status=success" >> $GITHUB_OUTPUT || echo "composer_autoload_status=failure" >> $GITHUB_OUTPUT
 
     - name: Generate Hyva Theme css
       id: hyva-theme
-      if: ${{ inputs.hyva_theme == 'true' }}
+      if: ${{ inputs.hyva_theme_path != '' }}
       shell: bash
       run: |
         npm --prefix ${{ inputs.hyva_theme_path }} run build-prod
@@ -100,14 +90,15 @@ runs:
 
     - name: Generate static files
       id: static-content-deploy
-      if: ${{ inputs.static_content_deploy == 'true' }}
+      if: ${{ inputs.static_content_deploy != '' }}
       shell: bash
       run: |
-        bin/magento setup:static-content:deploy -f -n ${{ inputs.static_content_deploy_options }}
+        bin/magento setup:static-content:deploy ${{ inputs.static_content_deploy_options }}
         [ $? -eq 0 ] && echo "static_content_deploy_status=success" >> $GITHUB_OUTPUT || echo "static_content_deploy_status=failure" >> $GITHUB_OUTPUT
 
     - name: Debug with custom output
       id: debug
+      if: ${{ inputs.debug_command != '' }}
       shell: bash
       run: |
         ${{ inputs.debug_command }}
