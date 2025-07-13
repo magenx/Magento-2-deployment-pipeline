@@ -1,17 +1,21 @@
-name: "Magento 2 code compilation test"
+name: "Magento 2 code installation and compilation test"
 author: "MagenX"
-description: "Check if setup-di-compile works without errors"
+description: "Check if composer installation with setup-di-compile works without errors"
 
 inputs:
   composer_install:
-    description: 'Emable composer  installation'
+    description: 'Enable composer installation'
     required: true
     default: true
   composer_auth:
     description: 'Composer auth'
     required: true
-  composer_options:
-    description: 'Additional composer options'
+  composer_install_options:
+    description: 'Additional composer installation options'
+    required: false
+    default: ''
+  composer_autoload_options:
+    description: 'Additional composer autoload options'
     required: false
     default: ''
   setup_compile_options:
@@ -43,6 +47,9 @@ outputs:
   composer_install_status:
     description: "The status of composer install step"
     value: ${{ steps.composer-install.outputs.composer_install_status }}
+  composer_autoload_status:
+    description: "The status of composer autoload step"
+    value: ${{ steps.composer-autoload.outputs.composer_autoload_status }}
   setup_di_compile_status:
     description: "The status of compilation step"
     value: ${{ steps.setup-di-compile.outputs.setup_di_compile_status }}
@@ -66,7 +73,7 @@ runs:
         COMPOSER_AUTH: ${{ inputs.composer_auth }}
       shell: bash
       run: |
-        composer install --no-dev --no-interaction ${{ inputs.composer_options }}
+        composer install ${{ inputs.composer_install_options }}
         [ $? -eq 0 ] && echo "composer_install_status=success" >> $GITHUB_OUTPUT || echo "composer_install_status=failure" >> $GITHUB_OUTPUT
 
     - name: Run setup di compile
@@ -75,6 +82,13 @@ runs:
       run: |
         bin/magento setup:di:compile -n ${{ inputs.setup_compile_options }}
         [ $? -eq 0 ] && echo "setup_di_compile_status=success" >> $GITHUB_OUTPUT || echo "setup_di_compile_status=failure" >> $GITHUB_OUTPUT
+
+    - name: Composer classmap optimization
+      id: composer-autoload
+      shell: bash
+      run: |
+        composer dump-autoload ${{ inputs.composer_autoload_options }}
+        [ $? -eq 0 ] && echo "composer_autoload_status=success" >> $GITHUB_OUTPUT || echo "composer_autoload_status=failure" >> $GITHUB_OUTPUT
 
     - name: Generate Hyva Theme css
       id: hyva-theme
