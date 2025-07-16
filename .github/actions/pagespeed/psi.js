@@ -16,7 +16,7 @@ async function run() {
     });
 
     const id = res.data.id;
-    let markdown = `## PageSpeed Insights for [${id}](${id}) (${strategy})\n\n`;
+    let markdown = `## PageSpeed Insights Report\n\n`;
 
     // CrUX metrics
     const cruxData = res.data.loadingExperience?.metrics || {};
