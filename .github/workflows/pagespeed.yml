@@ -16,4 +16,5 @@ jobs:
         with:
           url: '${{ secrets.PSI_URL }}'
           strategy: 'mobile'
-          key: ${{ secrets.PSI_API_KEY }}
+          psi_key: ${{ secrets.PSI_API_KEY }}
+          crux_key: ${{ secrets.CRUX_API_KEY }}
