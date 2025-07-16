@@ -1,0 +1,15 @@
+name: PageSpeed Insights
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pagespeed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run PageSpeed Insights
+        uses: ./.github/actions/pagespeed
+        with:
+          url: '${{ secrets.PSI_URL }}'
+          strategy: 'mobile'
+          key: ${{ secrets.PSI_API_KEY }}
