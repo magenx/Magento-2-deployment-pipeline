@@ -41,6 +41,7 @@ async function getPageSpeedData(url, strategy, key) {
       url,
       strategy,
       key,
+      category: ['performance', 'accessibility', 'best-practices', 'seo'],
     });
     return res.data;
   } catch (e) {
