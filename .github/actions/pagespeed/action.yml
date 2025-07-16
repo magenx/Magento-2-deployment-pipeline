@@ -4,24 +4,29 @@ inputs:
   url:
     description: "URL to analyze"
     required: true
-    default: "https://www.magenx.com"
+    default: "https://www.hyva.io"
+  key:
+    description: "GPSI API Key"
+    required: false
+    default: ""
   strategy:
-    description: "Strategy: mobile or desktop"
+    description: "Strategy (mobile or desktop)"
     required: false
     default: "mobile"
 runs:
   using: "composite"
   steps:
     - name: Set up Node.js
-      id: nodejs
+      id: node
       uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 #v4.4.0
       with:
         node-version: "20"
     - name: Install dependencies
       id: npm-install
       shell: bash
-      run: npm install @googleapis/pagespeedonline
+      run: npm install @googleapis/pagespeedonline@latest
     - name: Run PageSpeed Insights
       id: psi
       shell: bash
-      run: node ${{ github.action_path }}/pagespeed.js "${{ inputs.url }}" "${{ inputs.strategy }}"
+      run: |
+        node ${{ github.action_path }}/psi.js "${{ inputs.url }}" "${{ inputs.strategy }}" "${{ inputs.key }}"
