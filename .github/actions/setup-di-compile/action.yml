@@ -89,7 +89,7 @@ runs:
       if: ${{ inputs.static_content_deploy != '' }}
       shell: bash
       run: |
-        bin/magento setup:static-content:deploy ${{ inputs.static_content_deploy_options }}
+        bin/magento setup:static-content:deploy ${{ inputs.static_content_deploy }}
 
     - name: Debug with custom output
       id: debug
@@ -100,6 +100,7 @@ runs:
 
     - name: Status output for steps
       id: status
+      if: ${{ !cancelled() }}
       shell: bash
       run: |
         echo "composer_install_status=${{ steps.composer-install.outcome }}" >> $GITHUB_OUTPUT
