@@ -33,24 +33,24 @@ inputs:
     default: ''
 
 outputs:
-  composer_install_status:
+  composer_install:
     description: "The status of composer install step"
-    value: ${{ steps.composer-install.outputs.composer_install_status }}
-  composer_autoload_status:
+    value: ${{ steps.status.outputs.composer_install }}
+  composer_autoload:
     description: "The status of composer autoload step"
-    value: ${{ steps.composer-autoload.outputs.composer_autoload_status }}
-  setup_di_compile_status:
+    value: ${{ steps.status.outputs.composer_autoload }}
+  setup_di_compile:
     description: "The status of compilation step"
-    value: ${{ steps.setup-di-compile.outputs.setup_di_compile_status }}
-  hyva_theme_status:
+    value: ${{ steps.status.outputs.setup_di_compile }}
+  hyva_theme:
     description: "The status of hyva theme generation step"
-    value: ${{ steps.hyva-theme.outputs.hyva_theme_status }}
-  static_content_deploy_status:
+    value: ${{ steps.status.outputs.hyva_theme }}
+  static_content_deploy:
     description: "The status of static content deploy step"
-    value: ${{ steps.static-content-deploy.outputs.static_content_deploy_status }}
-  debug_status:
+    value: ${{ steps.status.outputs.static_content_deploy }}
+  debug:
     description: "The status of debug step"
-    value: ${{ steps.debug.outputs.debug_status }}
+    value: ${{ steps.status.outputs.debug }}
   
 runs:
   using: "composite"
@@ -103,9 +103,9 @@ runs:
       if: ${{ !cancelled() }}
       shell: bash
       run: |
-        echo "composer_install_status=${{ steps.composer-install.outcome }}" >> $GITHUB_OUTPUT
-        echo "setup_di_compile_status=${{ steps.setup-di-compile.outcome }}" >> $GITHUB_OUTPUT
-        echo "composer_autoload_status=${{ steps.composer-autoload.outcome }}" >> $GITHUB_OUTPUT
-        echo "hyva_theme_status=${{ steps.hyva_theme.outcome }}" >> $GITHUB_OUTPUT
-        echo "static_content_deploy_status=${{ steps.static-content-deploy.outcome }}" >> $GITHUB_OUTPUT
-        echo "debug_status=${{ steps.debug.outcome }}" >> $GITHUB_OUTPUT
+        echo "composer_install=${{ steps.composer-install.outcome }}" >> $GITHUB_OUTPUT
+        echo "setup_di_compile=${{ steps.setup-di-compile.outcome }}" >> $GITHUB_OUTPUT
+        echo "composer_autoload=${{ steps.composer-autoload.outcome }}" >> $GITHUB_OUTPUT
+        echo "hyva_theme=${{ steps.hyva_theme.outcome }}" >> $GITHUB_OUTPUT
+        echo "static_content_deploy=${{ steps.static-content-deploy.outcome }}" >> $GITHUB_OUTPUT
+        echo "debug=${{ steps.debug.outcome }}" >> $GITHUB_OUTPUT
