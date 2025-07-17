@@ -1,5 +1,47 @@
 # Changelog
 
+## [23.1.0](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v23.0.5...v23.1.0) (2025-07-17)
+
+
+### 🚀 Features
+
+* Add psi config script for github action ([e87e609](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e87e609c72ca14d6e5dfffc36dbc913db5e3c419))
+* Add simple google psi action ([37c2e79](https://github.com/magenx/Magento-2-deployment-pipeline/commit/37c2e793c2edeb69e3adeffcab28b5eb6347d1fc))
+
+
+### 🐛 Bug Fixes
+
+* Lets get all PSI categories ([b1513ce](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b1513ce655a5263c21451379c1285b3f7e8b285f))
+* Test update php file to trigger ([#277](https://github.com/magenx/Magento-2-deployment-pipeline/issues/277)) ([693115f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/693115fdbf482254e61db1cc66e7be91aaedaf0d))
+* Test update php file to trigger ([#285](https://github.com/magenx/Magento-2-deployment-pipeline/issues/285)) ([a21a73c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/a21a73ccffacea98cfc8ea059835ef4397a687df))
+* Update file to test settings ([#282](https://github.com/magenx/Magento-2-deployment-pipeline/issues/282)) ([507847d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/507847d51acc12c864a536b1f16dca3060d943cf))
+* Update psi action key variable ([814dfaa](https://github.com/magenx/Magento-2-deployment-pipeline/commit/814dfaa537f5bf7274e24fd161d1853eeedf9f3a))
+* Use correct output format for markdown ([68d9284](https://github.com/magenx/Magento-2-deployment-pipeline/commit/68d9284977cecde36776ac323e8ced5c0b29765e))
+* Use correct step names in status comment ([4e42fbb](https://github.com/magenx/Magento-2-deployment-pipeline/commit/4e42fbb2ec336b34e62b85af504fa116cfd3db16))
+* Use new crux api for complete data ([49f8d04](https://github.com/magenx/Magento-2-deployment-pipeline/commit/49f8d046aa5d6f92e614ea8373a6385e568f9329))
+
+
+### 🚦 Maintenance
+
+* **labeler:** More labels for changed files ([7660b3f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/7660b3f66836a5740f8329dab75f495e50568e0c))
+* **main:** magenxcloud 23.0.6-alpha ([#278](https://github.com/magenx/Magento-2-deployment-pipeline/issues/278)) ([a90a191](https://github.com/magenx/Magento-2-deployment-pipeline/commit/a90a19103ed924cb56a1f3f7aa506a3a58c187d3))
+* **main:** magenxcloud 23.1.0-alpha ([#279](https://github.com/magenx/Magento-2-deployment-pipeline/issues/279)) ([daac564](https://github.com/magenx/Magento-2-deployment-pipeline/commit/daac564a0cacca73f3b0ce93e7489ff509beef97))
+* **main:** magenxcloud 23.1.0-alpha.1 ([#283](https://github.com/magenx/Magento-2-deployment-pipeline/issues/283)) ([8e24be5](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8e24be5fcb545aa6330d2bddc74a55786cf340e2))
+* **main:** magenxcloud 23.1.0-alpha.2 ([#286](https://github.com/magenx/Magento-2-deployment-pipeline/issues/286)) ([7e444bf](https://github.com/magenx/Magento-2-deployment-pipeline/commit/7e444bff19a509e57b7ede7eaafcb243f9420784))
+* **readme:** Add Github PAT instructions ([18cc976](https://github.com/magenx/Magento-2-deployment-pipeline/commit/18cc9761863816ecc3f19c7a436bfd316c5560b3))
+* **readme:** Add more information about workflow ([cd89b23](https://github.com/magenx/Magento-2-deployment-pipeline/commit/cd89b23aefb936c7d667b5c642e5c10b9c154933))
+* **security:** Create action for security scanner ([3209592](https://github.com/magenx/Magento-2-deployment-pipeline/commit/3209592549a026a6e5ef58d686fd316ff9788246))
+* **workflow:** Add hyva theme and path variable ([e7853ec](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e7853ecbd3f9a47420447cc856ece06742959ca3))
+* **workflow:** Add more options to sdc workflow ([7b1ef9d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/7b1ef9d9c08ecaabc0c88ff8464c3b4190463333))
+* **workflow:** Correct steps in pr comment ([201a841](https://github.com/magenx/Magento-2-deployment-pipeline/commit/201a84144891372326121b0cfaf3d5fc1a41dc33))
+* **workflow:** Create pagespeed test workflow ([2fc4649](https://github.com/magenx/Magento-2-deployment-pipeline/commit/2fc4649af15ac8f460c83b3a89bdb28f62e2d773))
+* **workflow:** Move release config to its own directory ([19f7b13](https://github.com/magenx/Magento-2-deployment-pipeline/commit/19f7b136222551495930016d557b3d3b71146565))
+* **workflow:** PSI use correct steps for action ([8e6e027](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8e6e0271c3261b721dc484e90c6967b97eaf17d9))
+* **workflow:** Update sdc with more options ([1db677a](https://github.com/magenx/Magento-2-deployment-pipeline/commit/1db677a166e4b9191d7ee8e287dcb728f3f9bfba))
+* **workflow:** Use crux api for extended report ([de54a6e](https://github.com/magenx/Magento-2-deployment-pipeline/commit/de54a6e07435620a8e3620e7593df293715f5ea5))
+* **workflow:** Use crux api key for extended report ([d5d891f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/d5d891fd0615354b03714116dd47c7d1949119d9))
+* **workflow:** Use some default step for outputs ([dcbcc9d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/dcbcc9d55d6e799571f551cf3f06b6805342c2d1))
+
 ## [23.1.0-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v23.1.0-alpha.1...v23.1.0-alpha.2) (2025-07-17)
 
 
