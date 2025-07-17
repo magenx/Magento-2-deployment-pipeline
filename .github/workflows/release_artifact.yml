@@ -40,8 +40,7 @@ jobs:
         run: |
           gh release download "${{ steps.pre-release.outputs.tag_name }}" \
             --repo "${GITHUB_REPOSITORY}" \
-            --pattern "${{ steps.find-asset.outputs.asset_name }}" \
-            --repo "$GITHUB_REPOSITORY"
+            --pattern "${{ steps.find-asset.outputs.asset_name }}"
 
       - name: Attach assets to release
         id: upload-asset
