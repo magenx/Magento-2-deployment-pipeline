@@ -84,7 +84,7 @@ jobs:
           COMMENT+="${step_icons[${{ steps.compile.outputs.composer_install_status }}]} Composer install ${{ steps.compile.outputs.composer_install_status }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.setup_di_compile_status }}]} Code compilation ${{ steps.compile.outputs.setup_di_compile_status }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.composer_autoload_status }}]} Composer autoload ${{ steps.compile.outputs.composer_autoload_status }}\n"
-          COMMENT+="${step_icons[${{ steps.compile.outputs.hyva_theme_status }}]} Composer install ${{ steps.compile.outputs.hyva_theme_status }}\n"
+          COMMENT+="${step_icons[${{ steps.compile.outputs.hyva_theme_status }}]} Hyva theme generation ${{ steps.compile.outputs.hyva_theme_status }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.static_content_deploy_status }}]} Static content deploy ${{ steps.compile.outputs.static_content_deploy_status }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.debug_status }}]} Debug command ${{ steps.compile.outputs.debug_status }}\n"
           
