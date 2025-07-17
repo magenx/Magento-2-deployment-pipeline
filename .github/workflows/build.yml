@@ -35,7 +35,7 @@ jobs:
         uses: ./.github/actions/setup-di-compile
         with:
           composer_auth: "${{ secrets.COMPOSER_AUTH }}"
-          composer_install: "--no-dev --no-ansi --no-interaction --no-progress --no-suggest"
+          composer_install: "--no-ansi --no-dev --no-interaction --no-progress"
           composer_autoload: "--optimize --classmap-authoritative"
           setup_di_compile: "-n --no-ansi"
           static_content_deploy: "-f -n --no-ansi -j $(nproc)"
