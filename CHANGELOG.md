@@ -1,5 +1,21 @@
 # Changelog
 
+## [24.0.0-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v23.1.0-alpha.2...v24.0.0-alpha.2) (2025-07-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update file to test settings ([#288](https://github.com/magenx/Magento-2-deployment-pipeline/issues/288))
+
+### 🚀 Features
+
+* Update file to test settings ([#288](https://github.com/magenx/Magento-2-deployment-pipeline/issues/288)) ([1e52c19](https://github.com/magenx/Magento-2-deployment-pipeline/commit/1e52c19169343aa21eb50e7e4386ee87bff4e55a))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Use action status step always ([8703cb0](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8703cb05c81cf94ff75ce526ff29c837af1cfa89))
+
 ## [23.1.0-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v23.1.0-alpha.1...v23.1.0-alpha.2) (2025-07-17)
 
 
