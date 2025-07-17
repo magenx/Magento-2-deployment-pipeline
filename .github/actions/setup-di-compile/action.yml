@@ -22,7 +22,7 @@ inputs:
   static_content_deploy:
     description: 'Enable Magento static content deploy with options'
     required: false
-    default: false
+    default: ''
   hyva_theme_path:
     description: 'Enable HyvaTheme css generation with path to theme'
     required: false
@@ -63,14 +63,12 @@ runs:
       shell: bash
       run: |
         composer install ${{ inputs.composer_install }}
-        [ $? -eq 0 ] && echo "composer_install_status=success" >> $GITHUB_OUTPUT || echo "composer_install_status=failure" >> $GITHUB_OUTPUT
 
     - name: Run setup di compile
       id: setup-di-compile
       shell: bash
       run: |
         bin/magento setup:di:compile ${{ inputs.setup_di_compile }}
-        [ $? -eq 0 ] && echo "setup_di_compile_status=success" >> $GITHUB_OUTPUT || echo "setup_di_compile_status=failure" >> $GITHUB_OUTPUT
 
     - name: Composer classmap optimization
       id: composer-autoload
@@ -78,7 +76,6 @@ runs:
       shell: bash
       run: |
         composer dump-autoload ${{ inputs.composer_autoload }}
-        [ $? -eq 0 ] && echo "composer_autoload_status=success" >> $GITHUB_OUTPUT || echo "composer_autoload_status=failure" >> $GITHUB_OUTPUT
 
     - name: Generate Hyva Theme css
       id: hyva-theme
@@ -86,7 +83,6 @@ runs:
       shell: bash
       run: |
         npm --prefix ${{ inputs.hyva_theme_path }} run build-prod
-        [ $? -eq 0 ] && echo "hyva_theme_status=success" >> $GITHUB_OUTPUT || echo "hyva_theme_status=failure" >> $GITHUB_OUTPUT
 
     - name: Generate static files
       id: static-content-deploy
@@ -94,7 +90,6 @@ runs:
       shell: bash
       run: |
         bin/magento setup:static-content:deploy ${{ inputs.static_content_deploy_options }}
-        [ $? -eq 0 ] && echo "static_content_deploy_status=success" >> $GITHUB_OUTPUT || echo "static_content_deploy_status=failure" >> $GITHUB_OUTPUT
 
     - name: Debug with custom output
       id: debug
@@ -102,6 +97,14 @@ runs:
       shell: bash
       run: |
         ${{ inputs.debug_command }}
-        [ $? -eq 0 ] && echo "debug_status=success" >> $GITHUB_OUTPUT || echo "debug_status=failure" >> $GITHUB_OUTPUT
 
-
+    - name: Status output for steps
+      id: status
+      shell: bash
+      run: |
+        echo "composer_install_status=${{ steps.composer-install.outcome }}" >> $GITHUB_OUTPUT
+        echo "setup_di_compile_status=${{ steps.setup-di-compile.outcome }}" >> $GITHUB_OUTPUT
+        echo "composer_autoload_status=${{ steps.composer-autoload.outcome }}" >> $GITHUB_OUTPUT
+        echo "hyva_theme_status=${{ steps.hyva_theme.outcome }}" >> $GITHUB_OUTPUT
+        echo "static_content_deploy_status=${{ steps.static-content-deploy.outcome }}" >> $GITHUB_OUTPUT
+        echo "debug_status=${{ steps.debug.outcome }}" >> $GITHUB_OUTPUT
