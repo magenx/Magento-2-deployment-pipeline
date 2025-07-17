@@ -106,6 +106,6 @@ runs:
         echo "composer_install=${{ steps.composer-install.outcome }}" >> $GITHUB_OUTPUT
         echo "setup_di_compile=${{ steps.setup-di-compile.outcome }}" >> $GITHUB_OUTPUT
         echo "composer_autoload=${{ steps.composer-autoload.outcome }}" >> $GITHUB_OUTPUT
-        echo "hyva_theme=${{ steps.hyva_theme.outcome }}" >> $GITHUB_OUTPUT
+        echo "hyva_theme=${{ steps.hyva-theme.outcome }}" >> $GITHUB_OUTPUT
         echo "static_content_deploy=${{ steps.static-content-deploy.outcome }}" >> $GITHUB_OUTPUT
         echo "debug=${{ steps.debug.outcome }}" >> $GITHUB_OUTPUT
