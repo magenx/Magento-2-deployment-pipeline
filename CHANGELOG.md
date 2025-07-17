@@ -1,5 +1,17 @@
 # Changelog
 
+## [24.0.0-alpha.5](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.0-alpha.4...v24.0.0-alpha.5) (2025-07-17)
+
+
+### 🐛 Bug Fixes
+
+* Test update php file to trigger ([#297](https://github.com/magenx/Magento-2-deployment-pipeline/issues/297)) ([ed77c6f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ed77c6fbe167548f3aaa9fc3e6618d6454e3fe0a))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Use corect step ids in output ([b8bf205](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b8bf205e03097e9d9890fe6867ff5fc67ea6e556))
+
 ## [24.0.0-alpha.4](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.0-alpha.3...v24.0.0-alpha.4) (2025-07-17)
 
 
