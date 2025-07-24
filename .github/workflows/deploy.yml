@@ -33,7 +33,7 @@ jobs:
           ### secure oidc for aws
           #role-to-assume: ${{ secrets.AWS_ROLE }}
           #role-session-name: ${{ secrets.AWS_SESSION_NAME }}
-          #aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_REGION }}
           ### simple s3 token for hetzner
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
