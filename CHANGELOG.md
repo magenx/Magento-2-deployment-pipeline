@@ -1,5 +1,18 @@
 # Changelog
 
+## [24.0.1-alpha.1](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha...v24.0.1-alpha.1) (2025-07-24)
+
+
+### 🐛 Bug Fixes
+
+* Lets kick this snowpiercer too toooo part two ([#311](https://github.com/magenx/Magento-2-deployment-pipeline/issues/311)) ([3e32c80](https://github.com/magenx/Magento-2-deployment-pipeline/commit/3e32c80bde146102c5191a23879248e06f8cc30b))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Use secret key and shell ([#309](https://github.com/magenx/Magento-2-deployment-pipeline/issues/309)) ([08c60bc](https://github.com/magenx/Magento-2-deployment-pipeline/commit/08c60bc3eda21c6e17e7e199541aa0d807a35f5a))
+* **workflow:** Using parameters for security scan ([#310](https://github.com/magenx/Magento-2-deployment-pipeline/issues/310)) ([b9e405c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b9e405c352a911b4f57633029e40df3e10277ce6))
+
 ## [24.0.1-alpha](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.0...v24.0.1-alpha) (2025-07-24)
 
 
