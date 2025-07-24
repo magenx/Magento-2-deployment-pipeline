@@ -1,6 +1,11 @@
 name: "Run security scan"
 description: "Downloads and setup scanners and runs a scan on the repository."
 
+inputs:
+  ecomscan_key:
+    description: "Key for Ecomscan"
+    required: true
+
 outputs:
   output:
     description: "The output of the eComscan scan"
@@ -10,12 +15,13 @@ runs:
   steps:
     - name: Download eComscan
       id: ecomscan
+      shell: bash
       run: wget https://ecomscan.com/downloads/linux-amd64/ecomscan
 
     - name: Run eComscan
       id: security-scan
       env:
-        ECOMSCAN_KEY: ${{ secrets.ECOMSCAN_KEY }}
+        ECOMSCAN_KEY: ${{ inputs.ecomscan_key }}
       shell: bash
       run: |
         chmod +x ecomscan
