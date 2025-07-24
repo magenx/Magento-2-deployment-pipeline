@@ -11,12 +11,12 @@ inputs:
     description: 'Enable composer installation with options'
     required: false
     default: ''
-  composer_autoload:
-    description: 'Enable composer autoload with options'
-    required: false
-    default: ''
   setup_di_compile:
     description: 'Enable Magento di compile with options'
+    required: false
+    default: ''
+  composer_autoload:
+    description: 'Enable composer autoload with options'
     required: false
     default: ''
   static_content_deploy:
@@ -36,12 +36,12 @@ outputs:
   composer_install:
     description: "The status of composer install step"
     value: ${{ steps.status.outputs.composer_install }}
-  composer_autoload:
-    description: "The status of composer autoload step"
-    value: ${{ steps.status.outputs.composer_autoload }}
   setup_di_compile:
     description: "The status of compilation step"
     value: ${{ steps.status.outputs.setup_di_compile }}
+  composer_autoload:
+    description: "The status of composer autoload step"
+    value: ${{ steps.status.outputs.composer_autoload }}
   hyva_theme:
     description: "The status of hyva theme generation step"
     value: ${{ steps.status.outputs.hyva_theme }}
