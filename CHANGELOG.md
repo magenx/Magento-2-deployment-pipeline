@@ -1,5 +1,18 @@
 # Changelog
 
+## [24.0.1-alpha.3](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.2...v24.0.1-alpha.3) (2025-07-24)
+
+
+### 🐛 Bug Fixes
+
+* Update magenx cicd release yml ([#319](https://github.com/magenx/Magento-2-deployment-pipeline/issues/319)) ([31da60c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/31da60ce8d1bb88578ed7069e050771dfed7264a))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Make sure aws auth works for hetzner ([#318](https://github.com/magenx/Magento-2-deployment-pipeline/issues/318)) ([b6fc8e7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b6fc8e785aaa713bb650e2361ad57552acfba8c9))
+* **workflow:** Use temp log and stdout for security ([#317](https://github.com/magenx/Magento-2-deployment-pipeline/issues/317)) ([f166b7b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/f166b7b7a41c7211becb315cfcfa49009df74999))
+
 ## [24.0.1-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.1...v24.0.1-alpha.2) (2025-07-24)
 
 
