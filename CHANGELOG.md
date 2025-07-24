@@ -1,5 +1,12 @@
 # Changelog
 
+## [24.0.1-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.1...v24.0.1-alpha.2) (2025-07-24)
+
+
+### 🐛 Bug Fixes
+
+* Lets kick this snowpiercer too toooo part ([#314](https://github.com/magenx/Magento-2-deployment-pipeline/issues/314)) ([ee308aa](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ee308aa95512b421e9c5136fedeab301d1659bb5))
+
 ## [24.0.1-alpha.1](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha...v24.0.1-alpha.1) (2025-07-24)
 
 
