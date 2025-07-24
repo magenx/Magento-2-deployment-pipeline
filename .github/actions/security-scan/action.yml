@@ -28,4 +28,4 @@ runs:
         ./ecomscan -v --no-auto-update --skip-database --skip-dashboard --newonly --state-file ${{ runner.temp }}/security_scan.log .
         echo "log<<EOF" >> $GITHUB_OUTPUT
         cat ${{ runner.temp }}/security_scan.log >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        echo -e "\nEOF" >> $GITHUB_OUTPUT
