@@ -45,6 +45,8 @@ jobs:
         id: security-scan
         if: ${{ !cancelled() }}
         uses: ./.github/actions/security-scan
+        with:
+          ecomscan_key: ${{ secrets.ECOMSCAN_KEY }}
 
       - name: Set version for complete build
         id: set-build-version
