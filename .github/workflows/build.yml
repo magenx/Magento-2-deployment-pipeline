@@ -41,6 +41,11 @@ jobs:
           static_content_deploy: "-f -n --no-ansi -j $(nproc)"
           debug_command: "bin/magento"
 
+      - name: Call a security-scan action
+        id: security-scan
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/security-scan
+
       - name: Set version for complete build
         id: set-build-version
         run: | 
