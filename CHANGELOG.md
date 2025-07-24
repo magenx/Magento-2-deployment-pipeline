@@ -1,5 +1,31 @@
 # Changelog
 
+## [24.0.1](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.0...v24.0.1) (2025-07-24)
+
+
+### 🐛 Bug Fixes
+
+* Lets kick this snowpiercer too toooo ([#306](https://github.com/magenx/Magento-2-deployment-pipeline/issues/306)) ([6f9b82f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/6f9b82f3f5833595cd261648808af8e7421e43f9))
+* Lets kick this snowpiercer too toooo part ([#314](https://github.com/magenx/Magento-2-deployment-pipeline/issues/314)) ([ee308aa](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ee308aa95512b421e9c5136fedeab301d1659bb5))
+* Lets kick this snowpiercer too toooo part two ([#311](https://github.com/magenx/Magento-2-deployment-pipeline/issues/311)) ([3e32c80](https://github.com/magenx/Magento-2-deployment-pipeline/commit/3e32c80bde146102c5191a23879248e06f8cc30b))
+* Update magenx cicd release yml ([#319](https://github.com/magenx/Magento-2-deployment-pipeline/issues/319)) ([31da60c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/31da60ce8d1bb88578ed7069e050771dfed7264a))
+
+
+### 🚦 Maintenance
+
+* **main:** magenxcloud 24.0.1-alpha ([#307](https://github.com/magenx/Magento-2-deployment-pipeline/issues/307)) ([b8920e1](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b8920e1db36a5377d96acb8749ed8aac045425db))
+* **main:** magenxcloud 24.0.1-alpha.1 ([#312](https://github.com/magenx/Magento-2-deployment-pipeline/issues/312)) ([c7f3270](https://github.com/magenx/Magento-2-deployment-pipeline/commit/c7f3270a3baab2ec7da1371cfc6c14797e193542))
+* **main:** magenxcloud 24.0.1-alpha.2 ([#315](https://github.com/magenx/Magento-2-deployment-pipeline/issues/315)) ([aec1e78](https://github.com/magenx/Magento-2-deployment-pipeline/commit/aec1e786d015889236acd454124d53c26f379e0a))
+* **main:** magenxcloud 24.0.1-alpha.3 ([#320](https://github.com/magenx/Magento-2-deployment-pipeline/issues/320)) ([2ba37d9](https://github.com/magenx/Magento-2-deployment-pipeline/commit/2ba37d9ee1e3482d1d7498e8a763d3de1bf85fe8))
+* **workflow:** Make sure aws auth works for hetzner ([#318](https://github.com/magenx/Magento-2-deployment-pipeline/issues/318)) ([b6fc8e7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b6fc8e785aaa713bb650e2361ad57552acfba8c9))
+* **workflow:** Reorder action steps for better reading ([#304](https://github.com/magenx/Magento-2-deployment-pipeline/issues/304)) ([eb867ca](https://github.com/magenx/Magento-2-deployment-pipeline/commit/eb867ca79870dd1019eb9c10e6e38fda8dcbadc4))
+* **workflow:** Security scan action in complete build ([#305](https://github.com/magenx/Magento-2-deployment-pipeline/issues/305)) ([a9aab3f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/a9aab3fea04b1befa9ff5dca8f89d2f1f526e6a9))
+* **workflow:** Use secret key and shell ([#309](https://github.com/magenx/Magento-2-deployment-pipeline/issues/309)) ([08c60bc](https://github.com/magenx/Magento-2-deployment-pipeline/commit/08c60bc3eda21c6e17e7e199541aa0d807a35f5a))
+* **workflow:** Use simple security scan action ([#303](https://github.com/magenx/Magento-2-deployment-pipeline/issues/303)) ([442a47b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/442a47b7401d653047ef5a7e210172fcf7eb06f6))
+* **workflow:** Use temp log and stdout for security ([#317](https://github.com/magenx/Magento-2-deployment-pipeline/issues/317)) ([f166b7b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/f166b7b7a41c7211becb315cfcfa49009df74999))
+* **workflow:** Using aws action for iodc ([#302](https://github.com/magenx/Magento-2-deployment-pipeline/issues/302)) ([4948dcb](https://github.com/magenx/Magento-2-deployment-pipeline/commit/4948dcb3f13f353770eefc7f6355e171ecb74a05))
+* **workflow:** Using parameters for security scan ([#310](https://github.com/magenx/Magento-2-deployment-pipeline/issues/310)) ([b9e405c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b9e405c352a911b4f57633029e40df3e10277ce6))
+
 ## [24.0.1-alpha.3](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.2...v24.0.1-alpha.3) (2025-07-24)
 
 
