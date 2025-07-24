@@ -7,6 +7,9 @@ on:
 concurrency:
   group: deploy
 
+permissions:
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,16 +26,27 @@ jobs:
             --pattern "${{ github.event.client_payload.asset_name }}" \
             --dir ./${GITHUB_RUN_ID}/
 
+      - name: Configure AWS credentials
+        id: aws-auth
+        uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df #v4.2.1
+        with:
+          ### secure oidc for aws
+          #role-to-assume: ${{ secrets.AWS_ROLE }}
+          #role-session-name: ${{ secrets.AWS_SESSION_NAME }}
+          #aws-region: ${{ secrets.AWS_REGION }}
+          ### simple s3 token for hetzner
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
       - name: Upload release assets to S3 storage
         id: assets-upload
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           aws --endpoint-url https://${{ secrets.S3_ENDPOINT }} \
             s3 cp ./${GITHUB_RUN_ID}/${{ github.event.client_payload.asset_name }} \
             s3://${{ secrets.S3_BUCKET }}/releases/${{ github.event.client_payload.asset_name }}
 
+        # nginx redis rabbitmq event trigger for hetzner.
+        # in aws use s3 events with eventbridge lambda ssm.
       - name: Trigger webhook to start deployment
         id: deployment-webhook
         run: |
