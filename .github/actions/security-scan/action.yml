@@ -1,16 +1,6 @@
 name: "Run security scan"
 description: "Downloads and setup scanners and runs a scan on the repository."
 
-inputs:
-  scan-path:
-    description: "Path to project folder"
-    required: false
-    default: "."
-  scan-log:
-    description: "Path to scan log file"
-    required: false
-    default: "./security_scan_log"
-
 outputs:
   output:
     description: "The output of the eComscan scan"
@@ -29,7 +19,7 @@ runs:
       shell: bash
       run: |
         chmod +x ecomscan
-        outputs=$(./ecomscan --no-auto-update --skip-database --skip-dashboard --newonly --state-file ${{ inputs.scan-log }} ${{ inputs.scan-path }})
+        outputs=$(./ecomscan --no-auto-update --skip-database --skip-dashboard --newonly --state-file ./security_scan_log .)
         echo "output<<EOF" >> $GITHUB_OUTPUT
         echo "$outputs" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
