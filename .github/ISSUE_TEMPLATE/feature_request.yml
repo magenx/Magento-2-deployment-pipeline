@@ -1,0 +1,39 @@
+name: Feature request
+description: Report feature request
+labels: ['feature request']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Enter Feature Request:
+        Project stakeholders monitor and manage requests.
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Describe the feature you would like to add.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: |
+        What is the expected behavior of this feature?
+        How is it going to work?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Benefits
+      description: |
+        How do you think this feature would improve Magento?
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: |
+        What other information can you provide about the desired feature?
+  - type: textarea
+    attributes:
+      label: Release note
+      description: |
+        Help us to provide meaningful release notes to the community.
