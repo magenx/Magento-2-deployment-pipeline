@@ -1,5 +1,6 @@
 name: Feature request
 description: Report feature request
+title: "[Feature Request]: "
 labels: ['feature request']
 body:
   - type: markdown
