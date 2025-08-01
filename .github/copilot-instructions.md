@@ -6,14 +6,14 @@ For every pull request, review all changed PHP and JavaScript files for security
 
 ## PHP Files
 
-- **Target Version**: PHP 8.4
+- **Target Version**: PHP 8.3
 - **Check for basic errors and issues:**
   - Flag syntax errors, missing semicolons, unmatched braces, or incomplete statements.
   - Identify undefined variables, functions, or classes.
   - Detect unused variables, unreachable code, and logic errors.
 - **Compatibility:**
   - Flag use of deprecated or removed PHP functions, features, or syntax.
-  - Ensure code is compatible with the project’s minimum supported PHP versio.
+  - Ensure code is compatible with the project’s minimum supported PHP version.
 - **Coding standards:**
   - Flag violations of PSR-1/PSR-12 or project-specific coding guidelines.
   - Check for proper indentation, naming conventions, and clear comments.
