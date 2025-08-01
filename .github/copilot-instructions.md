@@ -7,6 +7,7 @@ For every pull request, review all changed PHP and JavaScript files for security
 ## PHP Files
 
 - **Target Version**: PHP 8.3
+- **Target Framework**: Magento 2.4.7
 - **Check for basic errors and issues:**
   - Flag syntax errors, missing semicolons, unmatched braces, or incomplete statements.
   - Identify undefined variables, functions, or classes.
@@ -17,6 +18,9 @@ For every pull request, review all changed PHP and JavaScript files for security
 - **Coding standards:**
   - Flag violations of PSR-1/PSR-12 or project-specific coding guidelines.
   - Check for proper indentation, naming conventions, and clear comments.
+- **PHP Performance:**
+  - Analyze PHP code and point out common performance anti-patterns, such as N+1 queries, inefficient loops, unnecessary object instantiation, or excessive memory usage.
+  - Suggest improvements based on best practices, such as optimizing database queries, using caching, and reducing computational complexity.
 - **Dangerous Functions:**  
   - Watch for use of `eval`, `base64_decode`, `system`, `shell_exec`, `exec`, `passthru`, `assert`, `create_function`, `preg_replace` with `/e` modifier.
 - **Obfuscation:**  
