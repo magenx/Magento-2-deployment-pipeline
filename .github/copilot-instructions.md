@@ -19,8 +19,8 @@ For every pull request, review all changed PHP and JavaScript files for security
   - Flag violations of PSR-1/PSR-12 or project-specific coding guidelines.
   - Check for proper indentation, naming conventions, and clear comments.
 - **PHP Performance:**
-  - Analyze PHP code and point out common performance anti-patterns.
-  - Suggest improvements based on best practices.
+  - Analyze PHP code and point out common performance anti-patterns, such as N+1 queries, inefficient loops, unnecessary object instantiation, or excessive memory usage.
+  - Suggest improvements based on best practices, such as optimizing database queries, using caching, and reducing computational complexity.
 - **Dangerous Functions:**  
   - Watch for use of `eval`, `base64_decode`, `system`, `shell_exec`, `exec`, `passthru`, `assert`, `create_function`, `preg_replace` with `/e` modifier.
 - **Obfuscation:**  
