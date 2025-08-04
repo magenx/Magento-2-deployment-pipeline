@@ -14,7 +14,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
         with:
-          ref: main 
+          ref: main
+          fetch-depth: 0
 
       - name: Set up PHP
         uses: shivammathur/setup-php@0f7f1d08e3e32076e51cae65eb0b0c871405b16e #v2.34.1
@@ -27,9 +28,14 @@ jobs:
         run: |
           MAGENTO_LATEST=$(curl -s https://api.github.com/repos/magento/magento2/tags 2>&1 | grep -m1 -oP '(?<=name": ")[0-9].*-p.*(?=")')
           echo "MAGENTO LATEST VERSION ${MAGENTO_LATEST}"
-          composer update -W  --ignore-platform-reqs
-          composer require-commerce magento/product-community-edition=${MAGENTO_LATEST} --no-update --ignore-platform-reqs
-          composer update -W  --ignore-platform-reqs
+          composer update -W
+          composer require-commerce magento/product-community-edition=${MAGENTO_LATEST} --no-update
+          composer update -W
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
 
       - name: Create PR and review changes
         run: |
@@ -41,6 +47,6 @@ jobs:
           git push origin "${BRANCH}"
 
           gh pr create --title "feat!(upgrade): Upgrade Magento to ${MAGENTO_LATEST} with PHP ${PHP_VERSION}" \
-          --body "Automated upgrade of Magento to ${MAGENTO_LATEST} with PHP ${PHP_VERSION}" \
+          --body "Auto upgrade of Magento to ${MAGENTO_LATEST} with PHP ${PHP_VERSION}" \
           --base main \
           --head "${BRANCH}"
