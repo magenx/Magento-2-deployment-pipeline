@@ -3,11 +3,11 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 /**
  * phpcs:disable PSR1.Files.SideEffects
  * phpcs:disable Squiz.Functions.GlobalFunction
  */
-
 use Magento\Framework\Config\ConfigOptionsListConstants;
 
 // phpcs:ignore Magento2.Functions.DiscouragedFunction

@@ -3,6 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
+
 /**
  * this is a router file for the php Built-in web server
  * https://secure.php.net/manual/en/features.commandline.webserver.php
@@ -12,6 +13,7 @@
  *
  * example usage: php -S 127.0.0.41:8082 -t ./pub/ ./router.php
  */
+
 /**
  * Set it to true to enable debug mode
  */
