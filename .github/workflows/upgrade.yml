@@ -1,4 +1,4 @@
-name: Upgrade Magento 2 to latest version
+name: Upgrade all to the latest version
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
         with:
           php-version: '${{ env.PHP_VERSION }}'
 
-      - name: Update Magento
+      - name: Upgrade all
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         run: |
@@ -45,10 +45,10 @@ jobs:
           git checkout -b "${BRANCH}"
 
           git add .
-          git commit -m "Upgrade Magento to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}"
+          git commit -m "Upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}"
           git push origin "${BRANCH}"
 
-          gh pr create --title "feat!(upgrade): Upgrade Magento to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
-          --body "Auto upgrade of Magento to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
+          gh pr create --title "feat!(upgrade): Upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
+          --body "Auto upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
           --base main \
           --head "${BRANCH}"
