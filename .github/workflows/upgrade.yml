@@ -29,7 +29,7 @@ jobs:
           echo "MAGENTO LATEST VERSION ${MAGENTO_LATEST}"
           echo MAGENTO_VERSION=${MAGENTO_LATEST} >> ${GITHUB_ENV}
           composer update -W
-          composer require-commerce magento/product-community-edition=${MAGENTO_VERSION} --no-update
+          composer require-commerce magento/product-community-edition=${MAGENTO_LATEST} --no-update
           composer update -W
 
       - name: Configure Git
@@ -48,7 +48,7 @@ jobs:
           git commit -m "Upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}"
           git push origin "${BRANCH}"
 
-          gh pr create --title "feat!(upgrade): Upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
-          --body "Auto upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
+          gh pr create --title "feat!(upgrade): Upgrade all with ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
+          --body "Auto upgrade all with ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
           --base main \
           --head "${BRANCH}"
