@@ -6,9 +6,10 @@ on:
       - opened
       - synchronize
     paths:
-      - "app/code/**"
-      - "app/etc/di.xml"
       - "composer.json"
+
+env:
+  PHP_VERSION: 8.2
 
 permissions:
   contents: write
@@ -24,6 +25,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up PHP
+        uses: shivammathur/setup-php@0f7f1d08e3e32076e51cae65eb0b0c871405b16e #v2.34.1
+        with:
+          php-version: '${{ env.PHP_VERSION }}'
+
       - name: Create composer cache
         id: create-composer-cache
         uses: ./.github/actions/composer-cache
@@ -35,54 +41,47 @@ jobs:
           base_ref: ${{ github.event.pull_request.base.ref }}
           base_path: "base"
 
-      - uses: reviewdog/action-setup@e04ffabe3898a0af8d0fb1af00c188831c4b5893 #v1.3.2
-        with:
-          reviewdog_version: v0.20.3
-
-      - name: Composer require review comment to PR
-        id: module-comment-pr
-        if: ${{ steps.composer-diff.outputs.require == 'true' }}
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          MODULES=$(awk '{printf "- **%s**<br>", $0}' require.txt | sed 's/ $//')
-          printf "composer.json: %s" "<br>$MODULES" \
-          | reviewdog -efm="%f: %m" \
-            -name="COMPOSER PACKAGES REQUIRE:" \
-            -reporter=github-pr-review \
-            -filter-mode=nofilter \
-            -level=info
-
-      - name: Install dependencies
-        id: composer-install
-        if: ${{ steps.composer-diff.outputs.require == 'true' }}
+      - name: Composer require dependencies
+        id: composer-require
+        if: ${{ steps.composer-diff.outputs.require == 'true' && steps.composer-diff.outputs.update != 'true' }}
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         run: |
           while read module; do
-            composer require "$module"
+            composer require "$module" --no-install
           done < require.txt
-          composer install --no-dev --no-ansi --no-interaction --no-progress --no-suggest
+
+      - name: Composer remove dependencies
+        id: composer-remove
+        if: ${{ steps.composer-diff.outputs.remove == 'true' }}
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        run: |
+          while read module; do
+            composer remove "$module" --no-update
+          done < remove.txt
+
+      - name: Composer install dependencies
+        id: composer-install
+        if: ${{ steps.composer-diff.outputs.update != 'true' }}
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        run: |
+          composer install --no-dev --no-ansi --no-interaction --no-progress
+
+      - name: Composer update all
+        id: composer-update
+        if: ${{ steps.composer-diff.outputs.update == 'true' }}
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+        run: |
+          composer update -W --no-dev --no-ansi --no-interaction --no-progress
 
       - name: Composer lock diff and Magento module extract
         id: composer-lock-diff
         uses: ./.github/actions/composer-lock-diff
         with:
           base_path: "base"
-
-      - name: Composer lock review comment to PR
-        id: module-lock-comment-pr
-        if: ${{ steps.composer-lock-diff.outputs.locked == 'true' }}
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          MODULES=$(awk '{printf "- **%s**<br>", $0}' locked.txt | sed 's/ $//')
-          printf "composer.lock: %s" "<br>$MODULES" \
-          | reviewdog -efm="%f: %m" \
-            -name="INCLUDING A REQUIRED DEPENDENCY:" \
-            -reporter=github-pr-review \
-            -filter-mode=nofilter \
-            -level=warning
 
       - name: Enable newly installed modules
         id: module-enable
@@ -98,7 +97,7 @@ jobs:
           composer_auth: ""
           composer_install: ""
           composer_autoload: ""
-          setup_di_compile: "-n -no-ansi"
+          setup_di_compile: "-n --no-ansi"
           static_content_deploy: ""
           debug_command: "bin/magento"
 
@@ -124,3 +123,48 @@ jobs:
           commit_message: "chore(composer): Update composer.lock to match composer.json"
           file_pattern: composer.lock
 
+      - uses: reviewdog/action-setup@e04ffabe3898a0af8d0fb1af00c188831c4b5893 #v1.3.2
+        with:
+          reviewdog_version: v0.20.3
+
+      - name: Composer require review comment to PR
+        id: package-require-comment-pr
+        if: ${{ steps.composer-diff.outputs.require == 'true' }}
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MODULES=$(awk '{printf "- **%s**<br>", $0}' require.txt | sed 's/ $//')
+          printf "composer.json: %s" "<br>$MODULES" \
+          | reviewdog -efm="%f: %m" \
+            -name="COMPOSER PACKAGES REQUIRE:" \
+            -reporter=github-pr-review \
+            -filter-mode=nofilter \
+            -level=info
+
+      - name: Composer remove review comment to PR
+        id: package-remove-comment-pr
+        if: ${{ steps.composer-diff.outputs.remove == 'true' }}
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MODULES=$(awk '{printf "- **%s**<br>", $0}' remove.txt | sed 's/ $//')
+          printf "composer.json: %s" "<br>$MODULES" \
+          | reviewdog -efm="%f: %m" \
+            -name="COMPOSER PACKAGES REMOVE:" \
+            -reporter=github-pr-review \
+            -filter-mode=nofilter \
+            -level=info
+
+      - name: Composer lock review comment to PR
+        id: package-lock-comment-pr
+        if: ${{ steps.composer-lock-diff.outputs.locked == 'true' }}
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MODULES=$(awk '{printf "- **%s**<br>", $0}' locked.txt | sed 's/ $//')
+          printf "composer.lock: %s" "<br>$MODULES" \
+          | reviewdog -efm="%f: %m" \
+            -name="INCLUDING A REQUIRED DEPENDENCY:" \
+            -reporter=github-pr-review \
+            -filter-mode=nofilter \
+            -level=warning
