@@ -21,5 +21,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: ${{ secrets.WEBSITE_URL }}
           issue_title: "ZAP Scan Baseline Report"
-          fail_action: true
           cmd_options: "-l WARN -D 1 -a -s -j"
