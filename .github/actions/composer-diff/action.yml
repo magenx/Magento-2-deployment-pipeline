@@ -21,6 +21,12 @@ outputs:
   remove:
     description: 'Boolean if there are removed modules'
     value: ${{ steps.find-removed-modules.outputs.remove }}
+  update:
+    description: 'Boolean if there is magento update'
+    value: ${{ steps.find-magento-update.outputs.update }}
+  magento_version:
+    description: 'Magento version update from PR'
+    value: ${{ steps.find-magento-update.outputs.magento_version }}
 runs:
   using: "composite"
   steps:
@@ -39,19 +45,19 @@ runs:
       id: require-base
       shell: bash
       run: |
-        jq -r '.require | to_entries[] | "\(.key):\(.value)"' "${{ inputs.base_path }}/composer.json" | sort > "${{ inputs.base_path }}/require_old.txt"
+        jq -r '.require | to_entries[] | "\(.key) \(.value)"' "${{ inputs.base_path }}/composer.json" | sort > "${{ inputs.base_path }}/require_old.txt"
 
     - name: Extract require block from PR
       id: require-pr
       shell: bash
       run: |
-        jq -r '.require | to_entries[] | "\(.key):\(.value)"' composer.json | sort > require_new.txt
+        jq -r '.require | to_entries[] | "\(.key) \(.value)"' composer.json | sort > require_new.txt
 
     - name: Find new modules in require block
       id: find-new-modules
       shell: bash
       run: |
-        comm -13 "${{ inputs.base_path }}/require_old.txt" require_new.txt > require.txt
+        comm -13 ${{ inputs.base_path }}/require_old.txt require_new.txt > require.txt
         if [ ! -s require.txt ]; then
           echo "No new composer packages."
         else
@@ -67,7 +73,7 @@ runs:
       id: find-removed-modules
       shell: bash
       run: |
-        comm -23 "${{ inputs.base_path }}/require_old.txt" require_new.txt > remove.txt
+        comm -23 <(cut -d' ' -f1 ${{ inputs.base_path }}/require_old.txt) <(cut -d' ' -f1 require_new.txt) > remove.txt
         if [ ! -s remove.txt ]; then
           echo "No packages removed."
         else
@@ -77,4 +83,18 @@ runs:
           echo "removed_modules<<EOF" >> "${GITHUB_OUTPUT}"
           cat remove.txt >> "${GITHUB_OUTPUT}"
           echo "EOF" >> "${GITHUB_OUTPUT}"
+        fi
+
+    - name: Find magento/product-community-edition in require block
+      id: find-magento-update
+      shell: bash
+      run: |
+        magento_version_pr="$(grep 'magento/product-community-edition' require_new.txt | awk '{print $2}' || true)"
+        if [ -n "$magento_version_pr" ]; then
+          echo "⚠️ Magento version update:"
+          echo "Version: $magento_version_pr"
+          echo "update=true" >> "${GITHUB_OUTPUT}"
+          echo "magento_version=$magento_version_pr" >> "${GITHUB_OUTPUT}"
+        else
+          echo "Magento version the same."
         fi
