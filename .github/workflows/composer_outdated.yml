@@ -5,6 +5,9 @@ on:
     - cron: '0 5 * * 0'
   workflow_dispatch:
 
+env:
+  PHP_VERSION: 8.2
+
 jobs:
   composer-outdated:
     runs-on: ubuntu-latest
@@ -21,6 +24,11 @@ jobs:
       - name: Create composer cache
         id: create-composer-cache
         uses: ./.github/actions/composer-cache
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@0f7f1d08e3e32076e51cae65eb0b0c871405b16e #v2.34.1
+        with:
+          php-version: '${{ env.PHP_VERSION }}'
 
       - name: Composer install modules
         id: composer-install
