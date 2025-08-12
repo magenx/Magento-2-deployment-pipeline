@@ -31,3 +31,6 @@ jobs:
             starts with an uppercase character and is 5 words long.
           wip: true
           validateSingleCommit: false
+          ignoreLabels: |
+            dependencies
+            github_actions
