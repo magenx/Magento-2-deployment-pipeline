@@ -1,5 +1,37 @@
 # Changelog
 
+## [24.0.1-alpha.4](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.3...v24.0.1-alpha.4) (2025-11-13)
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#362](https://github.com/magenx/Magento-2-deployment-pipeline/issues/362)) ([343afec](https://github.com/magenx/Magento-2-deployment-pipeline/commit/343afecdb7fba2c85b9d1a16db0b0b2d73e1390c))
+
+
+### 🚦 Maintenance
+
+* Remove failure parameter for zap action ([#347](https://github.com/magenx/Magento-2-deployment-pipeline/issues/347)) ([ef54978](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ef549783223206635a49db097af4538e200d8256))
+* **workflow:** Add new line at the end of log ([#322](https://github.com/magenx/Magento-2-deployment-pipeline/issues/322)) ([69b71c6](https://github.com/magenx/Magento-2-deployment-pipeline/commit/69b71c64b5f087c56b181376f8075c8448464aba))
+* **workflow:** Add php version setup and update vs install ([#349](https://github.com/magenx/Magento-2-deployment-pipeline/issues/349)) ([f0a88e7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/f0a88e702c40400fdfe50497843647848f46571f))
+* **workflow:** Add php version setup step ([#346](https://github.com/magenx/Magento-2-deployment-pipeline/issues/346)) ([977bcec](https://github.com/magenx/Magento-2-deployment-pipeline/commit/977bcec65896e3b23e408e7fe73d98ced5de4fc1))
+* **workflow:** Add version variable and gh token ([#336](https://github.com/magenx/Magento-2-deployment-pipeline/issues/336)) ([efd1cfc](https://github.com/magenx/Magento-2-deployment-pipeline/commit/efd1cfc6e55ab13a3cbbe501741d2c0eef5a919a))
+* **workflow:** Correct steps and add magento update ([#348](https://github.com/magenx/Magento-2-deployment-pipeline/issues/348)) ([2dd9d07](https://github.com/magenx/Magento-2-deployment-pipeline/commit/2dd9d07a1539260843e91ca0258e9d6c591c3bb7))
+* **workflow:** Create basic issue config file ([#331](https://github.com/magenx/Magento-2-deployment-pipeline/issues/331)) ([95cfef6](https://github.com/magenx/Magento-2-deployment-pipeline/commit/95cfef6878454d689bd48d5982940890ef0f6f4a))
+* **workflow:** Create bug report issue template ([#328](https://github.com/magenx/Magento-2-deployment-pipeline/issues/328)) ([106aef3](https://github.com/magenx/Magento-2-deployment-pipeline/commit/106aef31b3d6c383e71c354be8eb729262894ff4))
+* **workflow:** Create copilot instructions for pr review ([#332](https://github.com/magenx/Magento-2-deployment-pipeline/issues/332)) ([235f44d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/235f44d2205b7922de39d53e45a95f4aeea0269c))
+* **workflow:** Create feature request issue template ([#329](https://github.com/magenx/Magento-2-deployment-pipeline/issues/329)) ([f907117](https://github.com/magenx/Magento-2-deployment-pipeline/commit/f9071177fb6a4010e40aede2b45ade32328fb368))
+* **workflow:** Create zap security scan workflow ([#324](https://github.com/magenx/Magento-2-deployment-pipeline/issues/324)) ([81c43d2](https://github.com/magenx/Magento-2-deployment-pipeline/commit/81c43d2c97726d47d8d22f1bd34a8292a052c134))
+* **workflow:** Do not validate dependabot pr title ([#350](https://github.com/magenx/Magento-2-deployment-pipeline/issues/350)) ([3f0b0e7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/3f0b0e77d3c1438bb05d9ef1c5edac3fe36e320e))
+* **workflow:** Refactor release workflow to use latest artifact ([#360](https://github.com/magenx/Magento-2-deployment-pipeline/issues/360)) ([32f3b28](https://github.com/magenx/Magento-2-deployment-pipeline/commit/32f3b28a58acd87d109630793241bb6a2e74bd59))
+* **workflow:** Replace asset download with artifact download step ([#361](https://github.com/magenx/Magento-2-deployment-pipeline/issues/361)) ([662085a](https://github.com/magenx/Magento-2-deployment-pipeline/commit/662085ae5be228dd9d15f8d3f9fd45ca3c87ea03))
+* **workflow:** Update copilot instructions for php and magento ([#333](https://github.com/magenx/Magento-2-deployment-pipeline/issues/333)) ([5203537](https://github.com/magenx/Magento-2-deployment-pipeline/commit/52035376011f7bda8d4bc7057e9985998fcff3ee))
+* **workflow:** Update feature request issue template ([#330](https://github.com/magenx/Magento-2-deployment-pipeline/issues/330)) ([fe57a69](https://github.com/magenx/Magento-2-deployment-pipeline/commit/fe57a69624a6ff4f3ff481dac2712da7d627178a))
+* **workflow:** Update upgrade.yml use php git config ([#335](https://github.com/magenx/Magento-2-deployment-pipeline/issues/335)) ([94d61cf](https://github.com/magenx/Magento-2-deployment-pipeline/commit/94d61cfa2a875e3555e65d9a33fbbfa687dbdcd1))
+* **workflow:** Upgrade GitHub Actions and modify artifact handling ([#359](https://github.com/magenx/Magento-2-deployment-pipeline/issues/359)) ([8ba004f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8ba004f066ffe76cea359a1ac1f9b1ad65620191))
+* **workflow:** Upgrading all to the latest version ([#337](https://github.com/magenx/Magento-2-deployment-pipeline/issues/337)) ([2741da9](https://github.com/magenx/Magento-2-deployment-pipeline/commit/2741da9841113546c32e3fc6a38ae8174b6f4944))
+* **workflow:** Use corect version variable per steps ([#338](https://github.com/magenx/Magento-2-deployment-pipeline/issues/338)) ([5549873](https://github.com/magenx/Magento-2-deployment-pipeline/commit/554987307a238d1decc4b643ce51bd4c028ea50f))
+* **workflow:** Use WEBSITE_URL variable in all workflows ([#341](https://github.com/magenx/Magento-2-deployment-pipeline/issues/341)) ([47b4f8c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/47b4f8c358aceb4aa2f9f0ff78360425864b7ae0))
+
 ## [24.0.1-alpha.3](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.2...v24.0.1-alpha.3) (2025-07-24)
 
 
