@@ -1,5 +1,19 @@
 # Changelog
 
+## [24.0.1-alpha.5](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.4...v24.0.1-alpha.5) (2025-11-13)
+
+
+### 🐛 Bug Fixes
+
+* Remove empty line in PHP CS Fixer config ([#367](https://github.com/magenx/Magento-2-deployment-pipeline/issues/367)) ([8bbc528](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8bbc528773faac0a3be1d0a4cb2d0bab5b899cdd))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Fix artifact naming and upload settings ([#365](https://github.com/magenx/Magento-2-deployment-pipeline/issues/365)) ([b013d18](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b013d189a2b4389cf79d3f998c4ac9513370eaa7))
+* **workflow:** Fix artifact naming and upload settings in build.yml ([b013d18](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b013d189a2b4389cf79d3f998c4ac9513370eaa7))
+* **workflow:** Improve release artifact link formatting ([#366](https://github.com/magenx/Magento-2-deployment-pipeline/issues/366)) ([d4ec0e7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/d4ec0e79a4d12db174f91c98e9df9c1325afb869))
+
 ## [24.0.1-alpha.4](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.3...v24.0.1-alpha.4) (2025-11-13)
 
 
