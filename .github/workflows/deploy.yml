@@ -16,19 +16,19 @@ jobs:
     environment:
       name: ${{ github.event.client_payload.environment }}
     steps:
-      - name: Download assets from release
-        id: assets-download
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release download ${{ github.event.client_payload.tag_name }} \
-            --repo "${GITHUB_REPOSITORY}" \
-            --pattern "${{ github.event.client_payload.asset_name }}" \
-            --dir ./${GITHUB_RUN_ID}/
+      - name: Download latest artifact
+        id: artifact-download
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 #v6.0.0
+        with:
+          name: ${{ github.event.client_payload.artifact_name }}
+          path: ${GITHUB_RUN_ID}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.client_payload.artifact_run_id }}
 
       - name: Configure AWS credentials
         id: aws-auth
-        uses: aws-actions/configure-aws-credentials@b47578312673ae6fa5b5096b330d9fbac3d116df #v4.2.1
+        uses: aws-actions/configure-aws-credentials@00943011d9042930efac3dcd3a170e4273319bc8 #v5.1.0
         with:
           ### secure oidc for aws
           #role-to-assume: ${{ secrets.AWS_ROLE }}
@@ -38,12 +38,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Upload release assets to S3 storage
-        id: assets-upload
+      - name: Upload latest artifact to S3 storage
+        id: artifact-upload-to-s3
         run: |
           aws --endpoint-url https://${{ secrets.S3_ENDPOINT }} \
-            s3 cp ./${GITHUB_RUN_ID}/${{ github.event.client_payload.asset_name }} \
-            s3://${{ secrets.S3_BUCKET }}/releases/${{ github.event.client_payload.asset_name }}
+            s3 cp ./${GITHUB_RUN_ID}/${{ github.event.client_payload.artifact_name }} \
+            s3://${{ secrets.S3_BUCKET }}/releases/${{ github.event.client_payload.artifact_name }}
 
         # nginx redis rabbitmq event trigger for hetzner.
         # in aws use s3 events with eventbridge lambda ssm.
@@ -52,10 +52,10 @@ jobs:
         run: |
           timestamp=$(date -u +%s)
           webhook_payload=$(jq -n \
-            --arg asset_name "${{ github.event.client_payload.asset_name }}" \
-            --arg asset_digest "${{ github.event.client_payload.asset_digest }}" \
+            --arg artifact_name "${{ github.event.client_payload.artifact_name }}" \
+            --arg artifact_digest "${{ github.event.client_payload.artifact_digest }}" \
             --arg timestamp "$timestamp" \
-            '{asset_name: $asset_name, asset_digest: $asset_digest, timestamp: $timestamp}')
+            '{artifact_name: $artifact_name, artifact_digest: $artifact_digest, timestamp: $timestamp}')
 
           webhook_payload_signature=$(echo -n "$webhook_payload" | openssl dgst -sha256 -hmac "${{ secrets.SIGNATURE_HMAC_KEY }}" | cut -d ' ' -f2)
 
@@ -73,8 +73,8 @@ jobs:
           COMMENT=""
           declare -A step_icons=( ["success"]="✔️" ["failure"]="❌" ["skipped"]="➖"  ["cancelled"]="✖️" )
           COMMENT+="## ⚠️ ${{ github.event.client_payload.environment }} release ${{ github.event.client_payload.tag_name }} deployment status:\n"
-          COMMENT+="${step_icons[${{ steps.assets-download.outcome }}]} Download assets from ${{ github.job.environment.name }} release: ${{ steps.assets-download.outcome }}\n"
-          COMMENT+="${step_icons[${{ steps.assets-upload.outcome }}]} Upload assets to S3 storage: ${{ steps.assets-upload.outcome }}\n"
+          COMMENT+="${step_icons[${{ steps.artifact-download.outcome }}]} Download artifact release ${{ github.event.client_payload.artifact_name }}: ${{ steps.artifact-download.outcome }}\n"
+          COMMENT+="${step_icons[${{ steps.artifact-upload-to-s3.outcome }}]} Upload artifact to S3 storage: ${{ steps.artifact-upload-to-s3.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.deployment-webhook.outcome }}]} Deployment webhook event trigger: ${{ steps.deployment-webhook.outcome }}\n"
           echo -e "${COMMENT}" > deployment.txt
           DEPLOYMENT_STATUS=$(cat deployment.txt)
