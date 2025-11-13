@@ -72,8 +72,11 @@ jobs:
         uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe #v2.4.2
         with:
           tag_name: ${{ github.event.release.tag_name }}
-          body: "Link to pre-release build artifact: ${{ steps.upload-artifact.outputs.artifact-url }}"
           append_body: true
+          body: |
+            -- 
+            ✅ Link to pre-release build artifact:
+            "${{ steps.upload-artifact.outputs.artifact-url }}"
           
       - name: Construct status message for PR comment
         if: ${{ !cancelled() }}
