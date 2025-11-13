@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Checkout latest tag
         id: checkout-latest-tag
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -51,7 +51,7 @@ jobs:
       - name: Set version for complete build
         id: set-build-version
         run: | 
-          echo "ARTIFACT_NAME=release_$(date +%Y%m%d%H%M).tar.gz" >> ${GITHUB_ENV}
+          echo "ARTIFACT_NAME=release_$(date +%Y%m%d%H%M)-${{ github.event.release.tag_name }}.tar.gz" >> ${GITHUB_ENV}
 
       - name: Package build into tar archive
         id: tar-archive
@@ -67,17 +67,18 @@ jobs:
 
       - name: Upload build artifact
         id: upload-artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 #v4.6.2
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
-          name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.ARTIFACT_NAME }}
+          name: "${{ env.ARTIFACT_NAME }}"
+          path: "${{ env.ARTIFACT_NAME }}"
 
-      - name: Attach build to release assets
-        id: upload-asset
-        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 #v2.3.2
+      - name: Attach build artifact link to this pre-release information
+        id: artifact-link-to-release
+        uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe #v2.4.2
         with:
           tag_name: ${{ github.event.release.tag_name }}
-          files: ${{ env.ARTIFACT_NAME }}
+          body: "Link to pre-release build artifact: ${{ steps.upload-artifact.outputs.artifact-url }}"
+          append_body: true
           
       - name: Construct status message for PR comment
         if: ${{ !cancelled() }}
@@ -137,14 +138,16 @@ jobs:
 
       - name: Trigger post-release workflow
         id: payload
-        uses: peter-evans/repository-dispatch@ff45666b9427631e3450c54a1bcbee4d9ff4d7c0 #v3.0.0
+        uses: peter-evans/repository-dispatch@5fc4efd1a4797ddb68ffd0714a238564e4cc0e6f #v4.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           event-type: deployment
           client-payload: |-
             {
               "environment": "staging",
-              "asset_name": "${{ env.ARTIFACT_NAME }}",
-              "asset_digest": "${{ fromJSON(steps.upload-asset.outputs.assets)[0].digest }}",
+              "artifact_name": "${{ env.ARTIFACT_NAME }}",
+              "artifact_url": "${{ steps.upload-artifact.outputs.artifact-url }}",
+              "artifact_digest": "${{ steps.upload-artifact.outputs.artifact-digest }}",
+              "artifact_run_id" : "${GITHUB_RUN_ID}",
               "tag_name": "${{ github.event.release.tag_name }}"
             }
