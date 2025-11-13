@@ -50,27 +50,22 @@ jobs:
 
       - name: Set version for complete build
         id: set-build-version
-        run: | 
-          echo "ARTIFACT_NAME=release_$(date +%Y%m%d%H%M)-${{ github.event.release.tag_name }}.tar.gz" >> ${GITHUB_ENV}
-
-      - name: Package build into tar archive
-        id: tar-archive
-        run: | 
-          tar --ignore-failed-read --warning=no-file-changed \
-            -czf "${{ env.ARTIFACT_NAME }}" \
-            --exclude=".git" \
-            --exclude=".github" \
-            --exclude="app/etc/env.php" \
-            --exclude="CHANGELOG*" \
-            --exclude="${{ env.ARTIFACT_NAME }}" \
-            .
+        run: |
+          echo "ARTIFACT_NAME=release_$(date +%Y%m%d%H%M)-${{ github.event.release.tag_name }}" >> ${GITHUB_ENV}
 
       - name: Upload build artifact
         id: upload-artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: "${{ env.ARTIFACT_NAME }}"
-          path: "${{ env.ARTIFACT_NAME }}"
+          include-hidden-files: true
+          overwrite: true
+          path: |
+            *
+            !.git
+            !.github
+            !app/etc/env.php
+            !CHANGELOG*
 
       - name: Attach build artifact link to this pre-release information
         id: artifact-link-to-release
