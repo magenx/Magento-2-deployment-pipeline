@@ -35,14 +35,14 @@ jobs:
           echo "artifact_url=$(echo $ARTIFACT_JSON | jq -r '.archive_download_url')" >> $GITHUB_OUTPUT
           
           echo "✅ Found artifact: $artifact_name"
-          echo "Artifact url: $download_url"
+          echo "Artifact url: $artifact_url"
 
       - name: Attach build artifact link to this release information
         id: artifact-link-to-release
         uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe #v2.4.2
         with:
           tag_name: ${{ github.event.release.tag_name }}
-          body: "Link to release build artifact: ${{ steps.find-artifact.outputs.download_url }}"
+          body: "Link to release build artifact: ${{ steps.find-artifact.outputs.artifact_url }}"
           append_body: true 
 
       - name: Trigger post-release workflow
