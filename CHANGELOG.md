@@ -1,5 +1,17 @@
 # Changelog
 
+## [24.0.1-alpha.9](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.8...v24.0.1-alpha.9) (2025-11-14)
+
+
+### 🐛 Bug Fixes
+
+* Remove unnecessary blank line in config file ([#389](https://github.com/magenx/Magento-2-deployment-pipeline/issues/389)) ([a34bc29](https://github.com/magenx/Magento-2-deployment-pipeline/commit/a34bc29f80e1d51f56f2950662c1afdca4555711))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Enable role-skip-session-tagging in deploy workflow ([#388](https://github.com/magenx/Magento-2-deployment-pipeline/issues/388)) ([0c95191](https://github.com/magenx/Magento-2-deployment-pipeline/commit/0c9519168a76456fa450d4b6c027679334663dd1))
+
 ## [24.0.1-alpha.8](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.7...v24.0.1-alpha.8) (2025-11-14)
 
 
