@@ -1,5 +1,19 @@
 # Changelog
 
+## [24.0.1-alpha.7](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.6...v24.0.1-alpha.7) (2025-11-14)
+
+
+### 🐛 Bug Fixes
+
+* Remove unnecessary whitespace in configuration file ([#381](https://github.com/magenx/Magento-2-deployment-pipeline/issues/381)) ([38dab2e](https://github.com/magenx/Magento-2-deployment-pipeline/commit/38dab2eb41883f6c3251f90ada7d1c5d1aa86f1e))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Fix artifact path and update deployment comment ([#379](https://github.com/magenx/Magento-2-deployment-pipeline/issues/379)) ([10ba5a2](https://github.com/magenx/Magento-2-deployment-pipeline/commit/10ba5a283e3a02b8f3e68b95e892d5a168facd22))
+* **workflow:** Fix artifact_run_id syntax in action ([#378](https://github.com/magenx/Magento-2-deployment-pipeline/issues/378)) ([54498d1](https://github.com/magenx/Magento-2-deployment-pipeline/commit/54498d1cf4614d2ac2bb6ec2229eff1b98b4298a))
+* **workflow:** Rename AWS credentials step and simplify status logging ([#380](https://github.com/magenx/Magento-2-deployment-pipeline/issues/380)) ([518cb2e](https://github.com/magenx/Magento-2-deployment-pipeline/commit/518cb2e59153f5a5d1c8814931719e76e21dc4bf))
+
 ## [24.0.1-alpha.6](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.5...v24.0.1-alpha.6) (2025-11-14)
 
 
