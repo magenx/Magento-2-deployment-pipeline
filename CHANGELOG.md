@@ -1,5 +1,17 @@
 # Changelog
 
+## [24.0.1-alpha.8](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.7...v24.0.1-alpha.8) (2025-11-14)
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#385](https://github.com/magenx/Magento-2-deployment-pipeline/issues/385)) ([6128603](https://github.com/magenx/Magento-2-deployment-pipeline/commit/6128603cebfdca9fc07869adbe13378a585bf919))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Fix deployment status comment formatting and conditions ([#384](https://github.com/magenx/Magento-2-deployment-pipeline/issues/384)) ([cfce31a](https://github.com/magenx/Magento-2-deployment-pipeline/commit/cfce31a8cf5c85a61651b8214dd0c7f0cea8f660))
+
 ## [24.0.1-alpha.7](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.6...v24.0.1-alpha.7) (2025-11-14)
 
 
