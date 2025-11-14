@@ -21,7 +21,7 @@ jobs:
         uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 #v6.0.0
         with:
           name: ${{ github.event.client_payload.artifact_name }}
-          path: ${GITHUB_RUN_ID}
+          path: ${{ github.run_id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           run-id: ${{ github.event.client_payload.artifact_run_id }}
@@ -66,14 +66,14 @@ jobs:
             -H "X-Timestamp: $timestamp" \
             --data "$webhook_payload"
 
-      - name: Comment about deployment status
+      - name: Create comment about deployment status
         id: deployment-status-comment
         if: ${{ !cancelled() }}
         run: | 
           COMMENT=""
           declare -A step_icons=( ["success"]="✔️" ["failure"]="❌" ["skipped"]="➖"  ["cancelled"]="✖️" )
           COMMENT+="## ⚠️ ${{ github.event.client_payload.environment }} release ${{ github.event.client_payload.tag_name }} deployment status:\n"
-          COMMENT+="${step_icons[${{ steps.artifact-download.outcome }}]} Download artifact release ${{ github.event.client_payload.artifact_name }}: ${{ steps.artifact-download.outcome }}\n"
+          COMMENT+="${step_icons[${{ steps.artifact-download.outcome }}]} Download artifact build ${{ github.event.client_payload.artifact_name }}: ${{ steps.artifact-download.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.artifact-upload-to-s3.outcome }}]} Upload artifact to S3 storage: ${{ steps.artifact-upload-to-s3.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.deployment-webhook.outcome }}]} Deployment webhook event trigger: ${{ steps.deployment-webhook.outcome }}\n"
           echo -e "${COMMENT}" > deployment.txt
