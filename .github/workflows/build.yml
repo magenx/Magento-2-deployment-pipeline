@@ -82,7 +82,8 @@ jobs:
           body: |
             -- 
             ✅ Link to pre-release build artifact:
-            "${{ steps.upload-artifact.outputs.artifact-url }}"
+            ${{ env.ARTIFACT_NAME }}
+            ${{ steps.upload-artifact.outputs.artifact-url }}
           
       - name: Construct status message for PR comment
         if: ${{ !cancelled() }}
