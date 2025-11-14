@@ -93,6 +93,7 @@ jobs:
           COMMENT+="${step_icons[${{ steps.compile.outputs.hyva_theme }}]} Hyva theme generation ${{ steps.compile.outputs.hyva_theme }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.static_content_deploy }}]} Static content deploy ${{ steps.compile.outputs.static_content_deploy }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.debug }}]} Debug command ${{ steps.compile.outputs.debug }}\n"
+          COMMENT+="${step_icons[${{ steps.upload-artifact.outcome }}]} Upload artifact ${{ steps.upload-artifact.outcome }}\n"
           
           if [ "${{ job.status }}" == "success" ]; then
             COMMENT+="\n## Build and artifact details:\n"
@@ -134,7 +135,7 @@ jobs:
             --repo "${GITHUB_REPOSITORY}" \
             --body-file comment.txt
 
-      - name: Trigger post-release workflow
+      - name: Trigger pre-release deployment workflow
         id: payload
         uses: peter-evans/repository-dispatch@5fc4efd1a4797ddb68ffd0714a238564e4cc0e6f #v4.0.0
         with:
