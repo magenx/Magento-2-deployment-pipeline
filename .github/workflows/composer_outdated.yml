@@ -47,6 +47,8 @@ jobs:
 
       - name: Check for outdated packages
         id: composer-outdated
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         run: |
           composer outdated --direct --format=json > outdated.json
           echo "text<<EOF" >> $GITHUB_OUTPUT
