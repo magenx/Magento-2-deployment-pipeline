@@ -111,7 +111,7 @@ jobs:
       - name: Find existing issue
         id: find-issues
         if: ${{ github.event.client_payload.environment != 'staging' && !cancelled() }}
-        uses: actions-cool/issues-helper@a610082f8ac0cf03e357eb8dd0d5e2ba075e017e #v3.6.0
+        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
         with:
           actions: 'find-issues'
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -132,7 +132,7 @@ jobs:
       - name: Add labels
         id: issue-labeler
         if: ${{ steps.found-issues.outputs.issue_numbers != '' && !cancelled() }}
-        uses: actions-cool/issues-helper@a610082f8ac0cf03e357eb8dd0d5e2ba075e017e #v3.6.0
+        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
         with:
           actions: 'add-labels'
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -145,7 +145,7 @@ jobs:
         run: echo "date=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_OUTPUT
 
       - name: Create and maintain issue
-        uses: actions-cool/issues-helper@a610082f8ac0cf03e357eb8dd0d5e2ba075e017e #v3.6.0
+        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
         id: issue
         if: ${{ github.event.client_payload.environment != 'staging' && !cancelled() }}
         with:
