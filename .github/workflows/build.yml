@@ -99,7 +99,7 @@ jobs:
           COMMENT+="${step_icons[${{ steps.compile.outputs.hyva_theme }}]} Hyva theme generation ${{ steps.compile.outputs.hyva_theme }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.static_content_deploy }}]} Static content deploy ${{ steps.compile.outputs.static_content_deploy }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.debug }}]} Debug command ${{ steps.compile.outputs.debug }}\n"
-          COMMENT+="${step_icons[${{ steps.tar-artifact.outcome }}]} Upload artifact ${{ steps.tar-artifact.outcome }}\n"
+          COMMENT+="${step_icons[${{ steps.tar-artifact.outcome }}]} Create archive for artifact ${{ steps.tar-artifact.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.upload-artifact.outcome }}]} Upload artifact ${{ steps.upload-artifact.outcome }}\n"
           
           if [ "${{ job.status }}" == "success" ]; then
@@ -154,6 +154,6 @@ jobs:
               "artifact_name": "${{ env.ARTIFACT_NAME }}",
               "artifact_url": "${{ steps.upload-artifact.outputs.artifact-url }}",
               "artifact_digest": "${{ steps.upload-artifact.outputs.artifact-digest }}",
-              "artifact_run_id" : "${GITHUB_RUN_ID}",
+              "artifact_run_id" : "${{ github.run_id }}",
               "tag_name": "${{ github.event.release.tag_name }}"
             }
