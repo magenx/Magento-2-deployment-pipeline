@@ -1,4 +1,4 @@
-name: "Sync asset to production release"
+name: "Get artifact release for production"
 
 on:
   release:
