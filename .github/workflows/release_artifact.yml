@@ -46,7 +46,8 @@ jobs:
           body: |
             -- 
             ✅ Link to release build artifact:
-            "${{ steps.find-artifact.outputs.artifact_url }}" 
+            ${{ steps.find-artifact.outputs.artifact_name }}
+            ${{ steps.find-artifact.outputs.artifact_url }}
 
       - name: Trigger post-release workflow
         id: payload
