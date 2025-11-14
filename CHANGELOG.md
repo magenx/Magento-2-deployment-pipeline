@@ -1,5 +1,26 @@
 # Changelog
 
+## [24.0.1-alpha.6](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.5...v24.0.1-alpha.6) (2025-11-14)
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#375](https://github.com/magenx/Magento-2-deployment-pipeline/issues/375)) ([89ac601](https://github.com/magenx/Magento-2-deployment-pipeline/commit/89ac60188145ecbc9e1b5a1eee0ec07b9edf809d))
+
+
+### 🚦 Maintenance
+
+* **deps:** bump actions-cool/issues-helper from 3.6.0 to 3.6.3 ([#356](https://github.com/magenx/Magento-2-deployment-pipeline/issues/356)) ([ee7c6aa](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ee7c6aae8627ccf64b29bd97cad12edfea1f8101))
+* **deps:** bump actions/checkout from 4.2.2 to 5.0.0 ([#351](https://github.com/magenx/Magento-2-deployment-pipeline/issues/351)) ([16114a3](https://github.com/magenx/Magento-2-deployment-pipeline/commit/16114a36149a982b09fea97e85675407734664f9))
+* **deps:** bump amannn/action-semantic-pull-request ([c153073](https://github.com/magenx/Magento-2-deployment-pipeline/commit/c153073315f90bd3f66b6c6ae51fe8f19f628f30))
+* **deps:** bump amannn/action-semantic-pull-request from 5.5.3 to 6.1.1 ([#354](https://github.com/magenx/Magento-2-deployment-pipeline/issues/354)) ([c153073](https://github.com/magenx/Magento-2-deployment-pipeline/commit/c153073315f90bd3f66b6c6ae51fe8f19f628f30))
+* **deps:** bump shivammathur/setup-php from 2.34.1 to 2.35.5 ([#357](https://github.com/magenx/Magento-2-deployment-pipeline/issues/357)) ([9db7a15](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9db7a15d12acd7abfade52b7c9a7134d98c090e0))
+* **workflow:** Fix artifact pattern in release workflow ([#372](https://github.com/magenx/Magento-2-deployment-pipeline/issues/372)) ([dabc9de](https://github.com/magenx/Magento-2-deployment-pipeline/commit/dabc9de8c503a07eab286cbd3f3c61c528d7c9fa))
+* **workflow:** Format release artifact link in workflow ([#370](https://github.com/magenx/Magento-2-deployment-pipeline/issues/370)) ([e072044](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e0720445f46ce8d0a9351050c44dce615a29171f))
+* **workflow:** Package build artifact into tar archive ([#374](https://github.com/magenx/Magento-2-deployment-pipeline/issues/374)) ([1167d26](https://github.com/magenx/Magento-2-deployment-pipeline/commit/1167d26d2f934147f369e80d26339e867c1ad56f))
+* **workflow:** Rename workflow for clarity on artifact release ([#373](https://github.com/magenx/Magento-2-deployment-pipeline/issues/373)) ([059be2d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/059be2d94e684cef25cbd8893e4b1f6709fc59e8))
+* **workflow:** Rename workflow step for triggering release ([#371](https://github.com/magenx/Magento-2-deployment-pipeline/issues/371)) ([73b4066](https://github.com/magenx/Magento-2-deployment-pipeline/commit/73b4066a7049455507704d3daf6e0626672efcfb))
+
 ## [24.0.1-alpha.5](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.4...v24.0.1-alpha.5) (2025-11-13)
 
 
