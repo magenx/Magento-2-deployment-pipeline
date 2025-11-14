@@ -99,7 +99,7 @@ jobs:
           COMMENT+="${step_icons[${{ steps.compile.outputs.hyva_theme }}]} Hyva theme generation ${{ steps.compile.outputs.hyva_theme }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.static_content_deploy }}]} Static content deploy ${{ steps.compile.outputs.static_content_deploy }}\n"
           COMMENT+="${step_icons[${{ steps.compile.outputs.debug }}]} Debug command ${{ steps.compile.outputs.debug }}\n"
-          COMMENT+="${step_icons[${{ steps.tar-artifact.outcome }}]} Upload artifact ${{ steps.tar-artifact.outcome }}\n"
+          COMMENT+="${step_icons[${{ steps.tar-artifact.outcome }}]} Create archive for artifact ${{ steps.tar-artifact.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.upload-artifact.outcome }}]} Upload artifact ${{ steps.upload-artifact.outcome }}\n"
           
           if [ "${{ job.status }}" == "success" ]; then
