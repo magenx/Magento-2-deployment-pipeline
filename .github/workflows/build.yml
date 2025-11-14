@@ -154,6 +154,6 @@ jobs:
               "artifact_name": "${{ env.ARTIFACT_NAME }}",
               "artifact_url": "${{ steps.upload-artifact.outputs.artifact-url }}",
               "artifact_digest": "${{ steps.upload-artifact.outputs.artifact-digest }}",
-              "artifact_run_id" : "${GITHUB_RUN_ID}",
+              "artifact_run_id" : "${{ github.run_id }}",
               "tag_name": "${{ github.event.release.tag_name }}"
             }
