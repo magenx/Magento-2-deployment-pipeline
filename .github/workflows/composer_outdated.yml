@@ -72,8 +72,6 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_CI }}
         run: |
           copilot --version
-          gh auth login
-          copilot -p "Houston, we have a problem" --allow-all-tools 
-          #Analyze composer outdated output ./outdated.json" \
-          #and create issue ,Composer outdated modules check [${{ steps.date.outputs.date }}], \
-          #add labels dependencies,module,outdated and assignees ${{ github.repository_owner }}" --allow-all-tools 
+          copilot -p "Analyze composer outdated output ./outdated.json" \
+          and create issue ,Composer outdated modules check [${{ steps.date.outputs.date }}], \
+          add labels dependencies,module,outdated and assignees ${{ github.repository_owner }}" --allow-all-tools 
