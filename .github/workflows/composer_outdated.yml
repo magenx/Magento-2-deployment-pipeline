@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 v6.0.0
         with:
           node-version: '24'
         
@@ -72,7 +72,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MAGENX_CI_GITHUB_TOKEN }}
         run: |
           copilot --version
-          copilot -p "Analyze composer outdated output ./outdated.json \
-          and create issue "Composer outdated modules check [${{ steps.date.outputs.date }}] \
-          add labels dependencies,module,outdated \
-          and assignees ${{ github.repository_owner }}" --allow-all-tools 
+          copilot -p "Analyze composer outdated output ./outdated.json and create issue "Composer outdated modules check [${{ steps.date.outputs.date }}] add labels dependencies,module,outdated and assignees ${{ github.repository_owner }}" --allow-all-tools 
