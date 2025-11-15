@@ -72,4 +72,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MAGENX_CI_GITHUB_TOKEN }}
         run: |
           copilot --version
-          copilot -p "Analyze composer outdated output ./outdated.json and create issue "Composer outdated modules check [${{ steps.date.outputs.date }}] add labels dependencies,module,outdated and assignees ${{ github.repository_owner }}" --allow-all-tools 
+          copilot -p "Analyze composer outdated output ./outdated.json \
+          and create issue ,Composer outdated modules check [${{ steps.date.outputs.date }}], \
+          add labels dependencies,module,outdated and assignees ${{ github.repository_owner }}" --allow-all-tools 
