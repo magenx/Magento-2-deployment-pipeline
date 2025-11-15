@@ -21,16 +21,6 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 #v6.0.0
-        with:
-          node-version: '24'
-        
-      - name: Install GitHub Copilot CLI
-        run: |
-          echo "Installing GitHub Copilot CLI at $(date)"
-          npm install -g @github/copilot
-          
       - name: Create composer cache
         id: create-composer-cache
         uses: ./.github/actions/composer-cache
@@ -66,10 +56,29 @@ jobs:
         id: date
         run: echo "date=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_OUTPUT
 
-      - name: GitHub Copilot analyze composer outdated
-        id: copilot-analyze
+      - name: Find and manage composer outdated issue
+        id: composer-outdated-issue
         env:
-          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_CI }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          copilot --version
-          copilot -p "Analyze composer outdated output ./outdated.json and create issue ,Composer outdated modules check [${{ steps.date.outputs.date }}], add labels dependencies,module,outdated and assignees ${{ github.repository_owner }}" --allow-all-tools 
+          EXISTING_ISSUE=$(gh issue list --label "composer: outdated" --state open \
+          --repo "${GITHUB_REPOSITORY}" \
+          --search "Composer outdated modules check" \
+          --json number,title --jq '.[] | select(.title | startswith("Composer outdated modules check")) | .number') 
+          if [ -n "$EXISTING_ISSUE" ]; then
+            gh issue close "$EXISTING_ISSUE" --comment "new check [${{ steps.date.outputs.date }}]" \
+            --reason "not planned" \
+            --repo "${GITHUB_REPOSITORY}"
+          else
+            gh issue create \
+              --repo "${GITHUB_REPOSITORY}" \
+              --title "Composer outdated modules check [${{ steps.date.outputs.date }}]" \
+              --body "## ⚠️ Composer outdated modules:
+                
+                ${{ steps.composer-outdated.outputs.text }}
+                
+                generated on: [${{ steps.date.outputs.date }}]
+                [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+              --label "composer: outdated" \
+              --assignee "${{ github.repository_owner }}"
+          fi
