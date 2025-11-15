@@ -69,9 +69,10 @@ jobs:
       - name: GitHub Copilot analyze composer outdated
         id: copilot-analyze
         env:
-          COPILOT_GITHUB_TOKEN:: ${{ secrets.COPILOT_CI }}
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_CI }}
         run: |
           copilot --version
+          gh auth login
           copilot -p "Houston, we have a problem" --allow-all-tools 
           #Analyze composer outdated output ./outdated.json" \
           #and create issue ,Composer outdated modules check [${{ steps.date.outputs.date }}], \
