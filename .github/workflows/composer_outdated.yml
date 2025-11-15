@@ -48,16 +48,20 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
       
       - name: Use outdated packages list
+        id: outdated-packages-list
+        if: ${{ steps.composer-outdated.outputs.text != '' }}
         run: |
           echo "Outdated packages:"
           echo "${{ steps.composer-outdated.outputs.text }}"
 
       - name: Set current date
         id: date
+        if: ${{ steps.composer-outdated.outputs.text != '' }}
         run: echo "date=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_OUTPUT
 
       - name: Find and manage composer outdated issue
         id: composer-outdated-issue
+        if: ${{ steps.composer-outdated.outputs.text != '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -71,16 +75,15 @@ jobs:
                 --reason "not planned" \
                 --repo "${GITHUB_REPOSITORY}"
             done
-          else
-            gh issue create \
-              --repo "${GITHUB_REPOSITORY}" \
-              --title "Composer outdated modules check [${{ steps.date.outputs.date }}]" \
-              --body "## ⚠️ Composer outdated modules:
-                
-            ${{ steps.composer-outdated.outputs.text }}
-                
-                generated on: [${{ steps.date.outputs.date }}]
-                [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
-              --label "composer: outdated" \
-              --assignee "${{ github.repository_owner }}"
           fi
+          gh issue create \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Composer outdated modules check [${{ steps.date.outputs.date }}]" \
+            --body "## ⚠️ Composer outdated modules:
+          
+            ${{ steps.composer-outdated.outputs.text }}
+          
+              generated on: [${{ steps.date.outputs.date }}]
+              [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+            --label "composer: outdated" \
+            --assignee "${{ github.repository_owner }}"
