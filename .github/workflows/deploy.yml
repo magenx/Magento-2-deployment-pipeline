@@ -110,7 +110,7 @@ jobs:
 
       - name: Set current date
         id: date
-        if: ${{ steps.composer-outdated.outputs.text != '' }}
+        if: ${{ github.event.client_payload.environment == 'production' && !cancelled() }}
         run: echo "date=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_OUTPUT
 
       - name: Find and manage production deployment issue
@@ -133,7 +133,7 @@ jobs:
           gh issue create \
             --repo "${GITHUB_REPOSITORY}" \
             --title "Production release deployment status [${{ job.status }}]" \
-            --body "## 🚀 Production release deployment status: ${{ job.status }}:
+            --body "## 🚀 Production release deployment status: ${{ job.status }}
           
             ${{ steps.deployment-status-comment.outputs.deployment_status }}
           
