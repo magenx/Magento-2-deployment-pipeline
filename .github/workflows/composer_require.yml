@@ -110,7 +110,7 @@ jobs:
       - name: Commit updated config.php back to PR branch
         id: config-commit
         if: ${{ steps.git-diff-config.outputs.config_changed == 'true' }}
-        uses: stefanzweifel/git-auto-commit-action@778341af668090896ca464160c2def5d1d1a3eb0 #v6.0.1
+        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 #v7.0.0
         with:
           commit_message: "chore(config): Update app/etc/config.php after module enable"
           file_pattern: app/etc/config.php
@@ -118,53 +118,43 @@ jobs:
       - name: Commit updated composer.lock back to PR branch
         id: composer-lock-commit
         if: ${{ steps.composer-diff.outputs.require == 'true' }}
-        uses: stefanzweifel/git-auto-commit-action@778341af668090896ca464160c2def5d1d1a3eb0 #v6.0.1
+        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 #v7.0.0
         with:
           commit_message: "chore(composer): Update composer.lock to match composer.json"
           file_pattern: composer.lock
 
-      - uses: reviewdog/action-setup@e04ffabe3898a0af8d0fb1af00c188831c4b5893 #v1.3.2
-        with:
-          reviewdog_version: v0.20.3
-
       - name: Composer require review comment to PR
-        id: package-require-comment-pr
         if: ${{ steps.composer-diff.outputs.require == 'true' }}
         env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          MODULES=$(awk '{printf "- **%s**<br>", $0}' require.txt | sed 's/ $//')
-          printf "composer.json: %s" "<br>$MODULES" \
-          | reviewdog -efm="%f: %m" \
-            -name="COMPOSER PACKAGES REQUIRE:" \
-            -reporter=github-pr-review \
-            -filter-mode=nofilter \
-            -level=info
-
+          MODULES_REQUIRE=$(awk '{printf "- **%s**\n", $0}' require.txt)
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --repo "${GITHUB_REPOSITORY}" \
+            --body "## COMPOSER PACKAGES REQUIRE:
+          > composer.json:
+          $MODULES_REQUIRE"
+      
       - name: Composer remove review comment to PR
-        id: package-remove-comment-pr
         if: ${{ steps.composer-diff.outputs.remove == 'true' }}
         env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          MODULES=$(awk '{printf "- **%s**<br>", $0}' remove.txt | sed 's/ $//')
-          printf "composer.json: %s" "<br>$MODULES" \
-          | reviewdog -efm="%f: %m" \
-            -name="COMPOSER PACKAGES REMOVE:" \
-            -reporter=github-pr-review \
-            -filter-mode=nofilter \
-            -level=info
-
+          MODULES_REMOVE=$(awk '{printf "- **%s**\n", $0}' remove.txt)
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --repo "${GITHUB_REPOSITORY}" \
+            --body "## COMPOSER PACKAGES REMOVE:
+          > composer.json:
+          $MODULES_REMOVE"
+      
       - name: Composer lock review comment to PR
-        id: package-lock-comment-pr
         if: ${{ steps.composer-lock-diff.outputs.locked == 'true' }}
         env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          MODULES=$(awk '{printf "- **%s**<br>", $0}' locked.txt | sed 's/ $//')
-          printf "composer.lock: %s" "<br>$MODULES" \
-          | reviewdog -efm="%f: %m" \
-            -name="INCLUDING A REQUIRED DEPENDENCY:" \
-            -reporter=github-pr-review \
-            -filter-mode=nofilter \
-            -level=warning
+          MODULES_DEPENDENCY=$(awk '{printf "- **%s**\n", $0}' locked.txt)
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --repo "${GITHUB_REPOSITORY}" \
+            --body "## INCLUDING A REQUIRED DEPENDENCY:
+          > composer.lock:
+          $MODULES_DEPENDENCY"
