@@ -20,6 +20,16 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+        
+      - name: Install GitHub Copilot CLI
+        run: |
+          echo "Installing GitHub Copilot CLI at $(date)"
+          npm install -g @github/copilot
           
       - name: Create composer cache
         id: create-composer-cache
@@ -28,7 +38,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f #v2.35.5
         with:
-          php-version: '${{ env.PHP_VERSION }}'
+          php-version: '${{ env.PHP_VERSION }}' 
 
       - name: Composer install modules
         id: composer-install
@@ -56,49 +66,13 @@ jobs:
         id: date
         run: echo "date=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_OUTPUT
 
-      - name: Find existing issue
-        id: find-issues
-        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
-        with:
-          actions: 'find-issues'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-creator: 'github-actions[bot]'
-          issue-state: 'open'
-          title-includes: 'Composer outdated modules check'
-          labels: 'outdated'
-          exclude-labels: 'overdue'
-
-      - name: Process found issues
-        id: found-issues
+      - name: GitHub Copilot analyze composer outdated
+        id: copilot-analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.MAGENX_CI_GITHUB_TOKEN }}
         run: |
-          printf '%s' '${{ steps.find-issues.outputs.issues }}' > issues.txt
-          ISSUE_NUMBERS=$(grep -oP '(?<=number":)\d+' issues.txt | paste -sd,)
-          echo "issue_numbers=${ISSUE_NUMBERS}" >> $GITHUB_OUTPUT
-
-      - name: Add labels
-        id: issue-labeler
-        if: ${{ steps.found-issues.outputs.issue_numbers != '' }}
-        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ steps.found-issues.outputs.issue_numbers }}
-          labels: 'overdue'
-
-      - name: Create and maintain issue
-        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
-        id: issue
-        with:
-          actions: 'create-issue'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Composer outdated modules check [${{ steps.date.outputs.date }}]'
-          body: |
-            ## ⚠️ Composer outdated modules:
-            ${{ steps.composer-outdated.outputs.text }}
-              
-              
-            generated on: [${{ steps.date.outputs.date }}]
-            [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          labels: 'dependencies,module,outdated'
-          assignees: ${{ github.repository_owner }}
-          emoji: 'eyes'
+          copilot --version
+          copilot -p "Analyze composer outdated output ./outdated.json \
+          and create issue "Composer outdated modules check [${{ steps.date.outputs.date }}] \
+          add labels dependencies,module,outdated \
+          and assignees ${{ github.repository_owner }}" --allow-all-tools 
