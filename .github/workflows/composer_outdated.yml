@@ -61,21 +61,23 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          EXISTING_ISSUE=$(gh issue list --label "composer: outdated" --state open \
+          EXISTING_ISSUES=$(gh issue list --label "composer: outdated" --state open \
           --repo "${GITHUB_REPOSITORY}" \
           --search "Composer outdated modules check" \
           --json number,title --jq '.[] | select(.title | startswith("Composer outdated modules check")) | .number') 
-          if [ -n "$EXISTING_ISSUE" ]; then
-            gh issue close "$EXISTING_ISSUE" --comment "new check [${{ steps.date.outputs.date }}]" \
-            --reason "not planned" \
-            --repo "${GITHUB_REPOSITORY}"
+          if [ -n "$EXISTING_ISSUES" ]; then
+            echo "$EXISTING_ISSUES" | while read -r issue; do
+              gh issue close "$issue" --comment "new check [${{ steps.date.outputs.date }}]" \
+                --reason "not planned" \
+                --repo "${GITHUB_REPOSITORY}"
+            done
           else
             gh issue create \
               --repo "${GITHUB_REPOSITORY}" \
               --title "Composer outdated modules check [${{ steps.date.outputs.date }}]" \
               --body "## ⚠️ Composer outdated modules:
                 
-                ${{ steps.composer-outdated.outputs.text }}
+            ${{ steps.composer-outdated.outputs.text }}
                 
                 generated on: [${{ steps.date.outputs.date }}]
                 [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
