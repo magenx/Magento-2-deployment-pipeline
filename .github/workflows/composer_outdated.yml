@@ -69,7 +69,7 @@ jobs:
       - name: GitHub Copilot analyze composer outdated
         id: copilot-analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.MAGENX_CI_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.COPILOT_CI }}
         run: |
           copilot --version
           copilot -p "Houston, we have a problem" --allow-all-tools 
