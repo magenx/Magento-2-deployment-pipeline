@@ -70,7 +70,7 @@ jobs:
       - name: Create comment about deployment status
         id: deployment-status-comment
         if: ${{ !cancelled() }}
-        run: | 
+        run: |
           COMMENT=""
           declare -A step_icons=( ["success"]="✔️" ["failure"]="❌" ["skipped"]="➖"  ["cancelled"]="✖️" )
           COMMENT+="## ⚠️ ${{ github.event.client_payload.environment }} release ${{ github.event.client_payload.tag_name }} deployment status:\n"
@@ -103,62 +103,42 @@ jobs:
         if: ${{ github.event.client_payload.environment == 'staging' && !cancelled() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        run: | 
+        run: |
           gh pr comment ${{ steps.find-pr.outputs.pr_number }} \
           --repo "${GITHUB_REPOSITORY}" \
           --body-file deployment.txt
 
-      - name: Find existing issue
-        id: find-issues
-        if: ${{ github.event.client_payload.environment != 'staging' && !cancelled() }}
-        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
-        with:
-          actions: 'find-issues'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-creator: 'github-actions[bot]'
-          issue-state: 'open'
-          title-includes: 'Production release deployment status'
-          labels: 'release'
-          exclude-labels: 'overdue'
-
-      - name: Process found issues
-        id: found-issues
-        if: ${{ github.event.client_payload.environment != 'staging' && !cancelled() }}
-        run: |
-          printf '%s' '${{ steps.find-issues.outputs.issues }}' > issues.txt
-          ISSUE_NUMBERS=$(grep -oP '(?<=number":)\d+' issues.txt | paste -sd,)
-          echo "issue_numbers=${ISSUE_NUMBERS}" >> $GITHUB_OUTPUT
-
-      - name: Add labels
-        id: issue-labeler
-        if: ${{ steps.found-issues.outputs.issue_numbers != '' && !cancelled() }}
-        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
-        with:
-          actions: 'add-labels'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ steps.found-issues.outputs.issue_numbers }}
-          labels: 'overdue'
-
       - name: Set current date
-        if: ${{ !cancelled() }}
         id: date
+        if: ${{ steps.composer-outdated.outputs.text != '' }}
         run: echo "date=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_OUTPUT
 
-      - name: Create and maintain issue
-        uses: actions-cool/issues-helper@9861779a695cf1898bd984c727f685f351cfc372 #v3.7.2
-        id: issue
-        if: ${{ github.event.client_payload.environment != 'staging' && !cancelled() }}
-        with:
-          actions: 'create-issue'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Production release deployment status: ${{ job.status }}'
-          body: |
-            
+      - name: Find and manage production deployment issue
+        id: deployment-issue
+        if: ${{ github.event.client_payload.environment == 'production' && !cancelled() }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXISTING_ISSUES=$(gh issue list --label "release" --state open \
+          --repo "${GITHUB_REPOSITORY}" \
+          --search "Production release deployment status" \
+          --json number,title --jq '.[] | select(.title | startswith("Production release deployment status")) | .number') 
+          if [ -n "$EXISTING_ISSUES" ]; then
+            echo "$EXISTING_ISSUES" | while read -r issue; do
+              gh issue close "$issue" --comment "new deployment [${{ github.event.client_payload.artifact_name }}]" \
+                --reason "not planned" \
+                --repo "${GITHUB_REPOSITORY}"
+            done
+          fi
+          gh issue create \
+            --repo "${GITHUB_REPOSITORY}" \
+            --title "Production release deployment status [${{ job.status }}]" \
+            --body "## 🚀 Production release deployment status: ${{ job.status }}:
+          
             ${{ steps.deployment-status-comment.outputs.deployment_status }}
-              
-              
-            generated on: [${{ steps.date.outputs.date }}]
-            [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-          labels: 'release,deployment: ${{ job.status }}'
-          assignees: ${{ github.repository_owner }}
-
+          
+              generated on: [${{ steps.date.outputs.date }}]
+              [workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+            --label "deployment: ${{ job.status }}" \
+            --label "release" \
+            --assignee "${{ github.repository_owner }}"
