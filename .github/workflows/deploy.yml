@@ -82,7 +82,7 @@ jobs:
           COMMENT+="${step_icons[${{ steps.deployment-webhook.outcome }}]} Deployment webhook event trigger: ${{ steps.deployment-webhook.outcome }}\n"
           echo -e "${COMMENT}" > deployment.txt
           echo "deployment_status<<EOF" >> $GITHUB_OUTPUT
-          echo "$COMMENT" >> $GITHUB_OUTPUT
+          echo -e "$COMMENT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Find ${{ github.event.client_payload.environment }} release PR
@@ -136,8 +136,7 @@ jobs:
           gh issue create \
             --repo "${GITHUB_REPOSITORY}" \
             --title "Production release deployment status [${{ job.status }}]" \
-            --body "## 🚀 Production release deployment status: ${{ job.status }}
-          
+            --body "  
             ${{ steps.deployment-status-comment.outputs.deployment_status }}
           
               generated on: [${{ steps.date.outputs.date }}]
