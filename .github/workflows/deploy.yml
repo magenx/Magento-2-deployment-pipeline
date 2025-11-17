@@ -84,12 +84,13 @@ jobs:
         if: ${{ github.event.client_payload.environment == 'staging' && !cancelled() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRERELEASE_TYPE: ${{ vars.PRERELEASE_TYPE }}
         run: |
           pr_number=$(gh pr list \
             --repo "${GITHUB_REPOSITORY}" \
             --state open \
             --label "autorelease: pending" \
-            --search "-in:title alpha" \
+            --search "-in:title $PRERELEASE_TYPE" \
             --json number \
             --limit 1 \
             --jq '.[0].number')
