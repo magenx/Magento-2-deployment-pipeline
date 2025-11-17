@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  PRELELEASE_TYPE: "alpha"
+  PRELELEASE_TYPE: ${{ vars.PRERELEASE_TYPE }}
 
 concurrency:
   group: build
