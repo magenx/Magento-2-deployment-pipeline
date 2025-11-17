@@ -71,9 +71,9 @@ jobs:
           COMMENT=""
           declare -A step_icons=( ["success"]="✔️" ["failure"]="❌" ["skipped"]="➖"  ["cancelled"]="✖️" )
           COMMENT+="## ⚠️ ${{ github.event.client_payload.environment }} release ${{ github.event.client_payload.tag_name }} deployment status:\n"
-          COMMENT+="${step_icons[${{ steps.artifact-download.outcome }}]} Download artifact build: ${{ steps.artifact-download.outcome }}\n"
+          COMMENT+="${step_icons[${{ steps.artifact-download.outcome }}]} Download release artifact: ${{ steps.artifact-download.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.artifact-upload-to-s3.outcome }}]} Upload artifact to S3 storage: ${{ steps.artifact-upload-to-s3.outcome }}\n"
-          COMMENT+="${step_icons[${{ steps.deployment-webhook.outcome }}]} Deployment webhook event trigger: ${{ steps.deployment-webhook.outcome }}\n"
+          COMMENT+="${step_icons[${{ steps.deployment-webhook.outcome }}]} Deployment event webhook trigger: ${{ steps.deployment-webhook.outcome }}\n"
           echo -e "${COMMENT}" > deployment.txt
           echo "deployment_status<<EOF" >> $GITHUB_OUTPUT
           echo -e "$COMMENT" >> $GITHUB_OUTPUT
