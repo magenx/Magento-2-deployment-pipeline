@@ -65,7 +65,7 @@ jobs:
             --exclude="${{ env.ARTIFACT_NAME }}" \
             .
 
-      - name: Upload build artifact
+      - name: Upload pre-release build artifact
         id: upload-artifact
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
@@ -158,3 +158,19 @@ jobs:
               "artifact_run_id" : "${{ github.run_id }}",
               "tag_name": "${{ github.event.release.tag_name }}"
             }
+
+      - name: Rename pre-release artifact tag to release ready artifact
+        id: rename-artifact
+        run: |
+          artifact="${{ env.ARTIFACT_NAME }}"
+          new_artifact="${artifact%-*}.tar.gz"
+          mv "$artifact" "$new_artifact"
+          echo "ARTIFACT_NAME=$new_artifact" >> ${GITHUB_ENV}
+
+      - name: Upload release build artifact
+        id: upload-release-artifact
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
+        with:
+          name: "${{ env.ARTIFACT_NAME }}"
+          overwrite: true
+          path: ${{ env.ARTIFACT_NAME }}
