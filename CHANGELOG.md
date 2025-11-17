@@ -1,5 +1,30 @@
 # Changelog
 
+## [24.0.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1...v24.0.2) (2025-11-17)
+
+
+### 🐛 Bug Fixes
+
+* Remove unnecessary whitespace in configuration file ([#442](https://github.com/magenx/Magento-2-deployment-pipeline/issues/442)) ([e343a20](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e343a208bb8b5ae64a753dfefd647b302244da9a))
+
+
+### 🚦 Maintenance
+
+* **main:** magenxcloud 24.0.2-alpha ([#443](https://github.com/magenx/Magento-2-deployment-pipeline/issues/443)) ([9b0c499](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9b0c499018e958baae4d3d7ac84fec6501bdeb83))
+* **workflow:** Add PRERELEASE_TYPE environment variable to deploy ([#441](https://github.com/magenx/Magento-2-deployment-pipeline/issues/441)) ([5c8504f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/5c8504f98c452ca26fa4a6804c0d8af60d1455c1))
+* **workflow:** Change pre release type to variable ([#438](https://github.com/magenx/Magento-2-deployment-pipeline/issues/438)) ([3f83cd7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/3f83cd786815cdd6febb7a8f2b8802327aad30d7))
+* **workflow:** Fix echo command for deployment status output ([#430](https://github.com/magenx/Magento-2-deployment-pipeline/issues/430)) ([0171b8c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/0171b8c1e7cab0d4c5f64cb61fb87e5d72d41cfe))
+* **workflow:** Fix jq filter for artifact selection in workflow ([#424](https://github.com/magenx/Magento-2-deployment-pipeline/issues/424)) ([fcc9fd7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/fcc9fd71ddc154e32e59c067f153aaaad0c5b8df))
+* **workflow:** Refactor artifact logging in release workflow ([#425](https://github.com/magenx/Magento-2-deployment-pipeline/issues/425)) ([f7e37a3](https://github.com/magenx/Magento-2-deployment-pipeline/commit/f7e37a318c38a3287d71ae69be34b3e169b19733))
+* **workflow:** Refactor AWS credentials configuration in deploy ([#434](https://github.com/magenx/Magento-2-deployment-pipeline/issues/434)) ([c7ac89d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/c7ac89dcf4cc6e894c01825c5484d2190d1748e6))
+* **workflow:** Update AWS credentials configuration in deploy ([#427](https://github.com/magenx/Magento-2-deployment-pipeline/issues/427)) ([18170c8](https://github.com/magenx/Magento-2-deployment-pipeline/commit/18170c8f7d3d1c3035f2d37c15c87d9c96e1ce57))
+* **workflow:** Update AWS S3 credentials configuration ([#426](https://github.com/magenx/Magento-2-deployment-pipeline/issues/426)) ([88aa913](https://github.com/magenx/Magento-2-deployment-pipeline/commit/88aa91349e1ac47d4f97336c8b0c18a40a22fad4))
+* **workflow:** Update deploy for AWS and Hetzner configurations ([#432](https://github.com/magenx/Magento-2-deployment-pipeline/issues/432)) ([4d8cb02](https://github.com/magenx/Magento-2-deployment-pipeline/commit/4d8cb0237b066362fc462f44308e646cba7f9ce1))
+* **workflow:** Update deployment status messages in workflow ([#437](https://github.com/magenx/Magento-2-deployment-pipeline/issues/437)) ([9e6bdd7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9e6bdd79c08e82afb2374573aa9ae478236f0259))
+* **workflow:** Update permissions in deploy workflow ([#428](https://github.com/magenx/Magento-2-deployment-pipeline/issues/428)) ([0c5956e](https://github.com/magenx/Magento-2-deployment-pipeline/commit/0c5956e28b74233dad6224fefd2ad488d700505c))
+* **workflow:** Update PR search criteria in deploy workflow ([#439](https://github.com/magenx/Magento-2-deployment-pipeline/issues/439)) ([1c07dd1](https://github.com/magenx/Magento-2-deployment-pipeline/commit/1c07dd1da8d57cf4ccaafbd01a9593e31fd4ffd3))
+* **workflow:** Use variable for PRELELEASE_TYPE in build ([#440](https://github.com/magenx/Magento-2-deployment-pipeline/issues/440)) ([9a586ee](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9a586ee76f8da95c7d82972db104b8a94c3bf99b))
+
 ## [24.0.2-alpha](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1...v24.0.2-alpha) (2025-11-17)
 
 
