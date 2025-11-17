@@ -26,8 +26,7 @@ jobs:
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           repos/${{ github.repository }}/actions/artifacts \
-          --jq '[.artifacts[] | select(.name | test("'"$ARTIFACT_PATTERN"'")) | \
-          {id, name, archive_download_url, created_at, digest, workflow_run}] | sort_by(.created_at) | last')
+          --jq '[.artifacts[] | select(.name | test("'"$ARTIFACT_PATTERN"'")) | {id, name, archive_download_url, created_at, digest, workflow_run}] | sort_by(.created_at) | last')
           
           if [ "$(echo $ARTIFACT_JSON | jq -r '.id')" == "null" ]; then
             echo "❌ No artifact found matching pattern: $ARTIFACT_PATTERN"
