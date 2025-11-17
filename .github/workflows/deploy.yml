@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types: [deployment]
 
+env:
+  PRERELEASE_TYPE: ${{ vars.PRERELEASE_TYPE }}
+
 concurrency:
   group: deploy
 
@@ -84,7 +87,6 @@ jobs:
         if: ${{ github.event.client_payload.environment == 'staging' && !cancelled() }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PRERELEASE_TYPE: ${{ vars.PRERELEASE_TYPE }}
         run: |
           pr_number=$(gh pr list \
             --repo "${GITHUB_REPOSITORY}" \
