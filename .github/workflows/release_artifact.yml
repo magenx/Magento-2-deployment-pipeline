@@ -4,6 +4,11 @@ on:
   release:
     types: [published]
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag name'
+        required: true
+        type: string
 
 jobs:
   attach-artifact:
@@ -15,7 +20,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
+          TAG_NAME="${{ github.event.release.tag_name || inputs.tag_name }}"
           ARTIFACT_PATTERN="release_.*${TAG_NAME}.tar.gz"
           ARTIFACT_JSON=$(gh api \
           -H "Accept: application/vnd.github+json" \
@@ -42,7 +47,7 @@ jobs:
         id: artifact-link-to-release
         uses: softprops/action-gh-release@5be0e66d93ac7ed76da52eca8bb058f665c3a5fe #v2.4.2
         with:
-          tag_name: ${{ github.event.release.tag_name }}
+          tag_name: "${{ github.event.release.tag_name || inputs.tag_name }}"
           append_body: true
           body: |
             -- 
@@ -63,5 +68,5 @@ jobs:
               "artifact_url": "${{ steps.find-artifact.outputs.artifact_url }}",
               "artifact_digest": "${{ steps.find-artifact.outputs.artifact_digest }}",
               "artifact_run_id" : "${{ steps.find-artifact.outputs.artifact_run_id }}",
-              "tag_name": "${{ github.event.release.tag_name }}"
+              "tag_name": "${{ github.event.release.tag_name || inputs.tag_name }}"
             }
