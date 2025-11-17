@@ -38,6 +38,7 @@ jobs:
           #role-to-assume: ${{ secrets.AWS_ROLE }}
           #role-session-name: ${{ secrets.AWS_SESSION_NAME }}
           ### simple s3 token for hetzner
+          audience: ""
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           force-skip-oidc: true
@@ -45,12 +46,12 @@ jobs:
       - name: Upload latest artifact to S3 storage
         id: artifact-upload-to-s3
         run: |
-          aws --endpoint-url https://${{ secrets.S3_ENDPOINT }} \
+          aws --endpoint-url ${{ secrets.S3_ENDPOINT }} \
             s3 cp ./${GITHUB_RUN_ID}/${{ github.event.client_payload.artifact_name }} \
             s3://${{ secrets.S3_BUCKET }}/releases/${{ github.event.client_payload.artifact_name }}
 
-        # nginx redis rabbitmq event trigger for hetzner.
-        # in aws use s3 events with eventbridge lambda ssm.
+        # python, nginx, redis, rabbitmq event trigger for hetzner.
+        # in aws use s3 events with eventbridge, lambda, ssm.
       - name: Trigger webhook to start deployment
         id: deployment-webhook
         run: |
