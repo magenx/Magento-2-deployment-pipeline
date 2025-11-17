@@ -1,21 +1,22 @@
-name: "Get artifact release for production"
+name: "Get release artifact for production"
 
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   attach-artifact:
     if: "${{ github.event.release.prerelease == false }}"
     runs-on: ubuntu-latest
     steps:
-      - name: Find latest artifact
+      - name: Find latest release artifact
         id: find-artifact
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TAG_NAME="${{ github.event.release.tag_name }}"
-          ARTIFACT_PATTERN="release_.*${TAG_NAME}.*"
+          ARTIFACT_PATTERN="release_.*${TAG_NAME}.tar.gz"
           ARTIFACT_JSON=$(gh api \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
@@ -49,7 +50,7 @@ jobs:
             ${{ steps.find-artifact.outputs.artifact_name }}
             ${{ steps.find-artifact.outputs.artifact_url }}
 
-      - name: Trigger post-release workflow
+      - name: Trigger post-release deployment workflow
         id: payload
         uses: peter-evans/repository-dispatch@5fc4efd1a4797ddb68ffd0714a238564e4cc0e6f #v4.0.0
         with:
