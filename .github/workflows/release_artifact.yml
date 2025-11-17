@@ -39,8 +39,8 @@ jobs:
           echo "artifact_name=$(echo $ARTIFACT_JSON | jq -r '.name')" >> $GITHUB_OUTPUT
           echo "artifact_url=$(echo $ARTIFACT_JSON | jq -r '.archive_download_url')" >> $GITHUB_OUTPUT
           
-          echo "✅ Found artifact: $artifact_name"
-          echo "Artifact url: $artifact_url"
+          echo "✅ Found artifact: $(echo $ARTIFACT_JSON | jq -r '.name')"
+          echo "Artifact url: $(echo $ARTIFACT_JSON | jq -r '.archive_download_url')"
 
       - name: Attach build artifact link to this release information
         id: artifact-link-to-release
