@@ -15,7 +15,6 @@ permissions:
   actions: read
   
 env:
-  PRERELEASE_TYPE: "alpha"
   PRERELEASE_CONFIG: ".github/release/prerelease-config.json"
   PRERELEASE_MANIFEST: ".github/release/prerelease-manifest.json"
   RELEASE_CONFIG: ".github/release/config.json"
@@ -49,7 +48,7 @@ jobs:
 
   release:
     name: Publish pre-release then release PR
-    if: ${{ needs.pre-release.outputs.releases_created == 'true' && contains(needs.pre-release.outputs.tag_name, 'alpha') }}
+    if: ${{ needs.pre-release.outputs.releases_created == 'true' && contains(needs.pre-release.outputs.tag_name, vars.PRERELEASE_TYPE) }}
     runs-on: ubuntu-latest
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
