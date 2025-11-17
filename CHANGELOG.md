@@ -1,5 +1,43 @@
 # Changelog
 
+## [24.0.1-alpha.10](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.9...v24.0.1-alpha.10) (2025-11-17)
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#421](https://github.com/magenx/Magento-2-deployment-pipeline/issues/421)) ([551f074](https://github.com/magenx/Magento-2-deployment-pipeline/commit/551f0745df5a33b66f80d0d30149267347f5ac14))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Add COMPOSER_AUTH environment variable for checks ([#393](https://github.com/magenx/Magento-2-deployment-pipeline/issues/393)) ([5602ad3](https://github.com/magenx/Magento-2-deployment-pipeline/commit/5602ad31e9ab0611046c55bcd7accdfbea7bbe5f))
+* **workflow:** Enable check for outdated composer packages ([#396](https://github.com/magenx/Magento-2-deployment-pipeline/issues/396)) ([31a521e](https://github.com/magenx/Magento-2-deployment-pipeline/commit/31a521ed7f2d2a6a38dcd7d925695772ebaf3c3b))
+* **workflow:** Enhance deployment workflow for production issues ([#414](https://github.com/magenx/Magento-2-deployment-pipeline/issues/414)) ([2c7e2dc](https://github.com/magenx/Magento-2-deployment-pipeline/commit/2c7e2dc22ca57d4421826f344fbe852c14804d35))
+* **workflow:** Fix artifact URL and filename ([#398](https://github.com/magenx/Magento-2-deployment-pipeline/issues/398)) ([e939faa](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e939faa751ee3ac4b38d037b35473ecb5721fe81))
+* **workflow:** Fix artifact URL in release workflow ([#397](https://github.com/magenx/Magento-2-deployment-pipeline/issues/397)) ([8533e11](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8533e11e44987baf976e60a1f5428aefd3ef8507))
+* **workflow:** Fix command syntax in composer outdated ([#408](https://github.com/magenx/Magento-2-deployment-pipeline/issues/408)) ([5f94a82](https://github.com/magenx/Magento-2-deployment-pipeline/commit/5f94a82fc8d1c8d1fec223c4d517ab6289b7dcf6))
+* **workflow:** Fix command syntax in composer_outdated.yml ([5f94a82](https://github.com/magenx/Magento-2-deployment-pipeline/commit/5f94a82fc8d1c8d1fec223c4d517ab6289b7dcf6))
+* **workflow:** Fix environment variable name for GitHub Copilot ([#405](https://github.com/magenx/Magento-2-deployment-pipeline/issues/405)) ([bfb1820](https://github.com/magenx/Magento-2-deployment-pipeline/commit/bfb1820f76b6891bb6acb2dfd30e26691485d56b))
+* **workflow:** Fix syntax for COPILOT_GITHUB_TOKEN in workflow ([#406](https://github.com/magenx/Magento-2-deployment-pipeline/issues/406)) ([156c7fa](https://github.com/magenx/Magento-2-deployment-pipeline/commit/156c7fafb543e39988d0fa27c972765f30a27473))
+* **workflow:** Integrate GitHub Copilot CLI for composer analysis ([#399](https://github.com/magenx/Magento-2-deployment-pipeline/issues/399)) ([7e278f8](https://github.com/magenx/Magento-2-deployment-pipeline/commit/7e278f84838ebc72825568c2eec3681314191c41))
+* **workflow:** Modify copilot command in composer outdated ([#403](https://github.com/magenx/Magento-2-deployment-pipeline/issues/403)) ([969cd05](https://github.com/magenx/Magento-2-deployment-pipeline/commit/969cd05c612aba00bcfdd2238caaf61391da2d01))
+* **workflow:** Refactor command for composer outdated issue creation ([#402](https://github.com/magenx/Magento-2-deployment-pipeline/issues/402)) ([663ad6e](https://github.com/magenx/Magento-2-deployment-pipeline/commit/663ad6ed203e5c7b328333a752cf6bcac716ff39))
+* **workflow:** Refactor composer outdated issue management logic ([#412](https://github.com/magenx/Magento-2-deployment-pipeline/issues/412)) ([0335f40](https://github.com/magenx/Magento-2-deployment-pipeline/commit/0335f405a2281ba41ab2a517b3c40228877e76df))
+* **workflow:** Refactor composer outdated package check ([#392](https://github.com/magenx/Magento-2-deployment-pipeline/issues/392)) ([96db685](https://github.com/magenx/Magento-2-deployment-pipeline/commit/96db6859c13c4d13b7c770ef464fdcd058b8529a))
+* **workflow:** Refactor composer outdated workflow to manage issues ([#410](https://github.com/magenx/Magento-2-deployment-pipeline/issues/410)) ([1071342](https://github.com/magenx/Magento-2-deployment-pipeline/commit/107134289354c8ea553076823c531f8f52899a97))
+* **workflow:** Refactor copilot command for composer outdated check ([#407](https://github.com/magenx/Magento-2-deployment-pipeline/issues/407)) ([d6455e9](https://github.com/magenx/Magento-2-deployment-pipeline/commit/d6455e90b76980307fe042a006c9c247021a7b26))
+* **workflow:** Rename and upload release build artifact ([#419](https://github.com/magenx/Magento-2-deployment-pipeline/issues/419)) ([5cc49a7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/5cc49a7210773e58accc1f9c8f60dcda87bc3dcf))
+* **workflow:** Simplify copilot command in workflow file ([#409](https://github.com/magenx/Magento-2-deployment-pipeline/issues/409)) ([820ea68](https://github.com/magenx/Magento-2-deployment-pipeline/commit/820ea6880521c44f5c55f1cc64fdb105011e719e))
+* **workflow:** Update deployment workflow for production environment ([#415](https://github.com/magenx/Magento-2-deployment-pipeline/issues/415)) ([ccce56b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ccce56bfe5f5b8726575c5c36a5065a12e996f1c))
+* **workflow:** Update GitHub token for Copilot analysis ([#404](https://github.com/magenx/Magento-2-deployment-pipeline/issues/404)) ([0d40b0b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/0d40b0bbea334c9cd6b76a50fafae4c29a8e0e05))
+* **workflow:** Update issue handling in composer outdated workflow ([#411](https://github.com/magenx/Magento-2-deployment-pipeline/issues/411)) ([b2c90c9](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b2c90c90d38a2c02814821c8ca704b2e8e157971))
+* **workflow:** Update Node action version and copilot command ([#400](https://github.com/magenx/Magento-2-deployment-pipeline/issues/400)) ([c294b1c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/c294b1cad8dd8e89c74e8a75a9f299525d581896))
+* **workflow:** Update release please action ([bbd4ffb](https://github.com/magenx/Magento-2-deployment-pipeline/commit/bbd4ffb0f5a557940823cd1c0f941ad6e5bc8d28))
+* **workflow:** Update release please action latest ([#417](https://github.com/magenx/Magento-2-deployment-pipeline/issues/417)) ([bbd4ffb](https://github.com/magenx/Magento-2-deployment-pipeline/commit/bbd4ffb0f5a557940823cd1c0f941ad6e5bc8d28))
+* **workflow:** Update setup node action version comment ([#401](https://github.com/magenx/Magento-2-deployment-pipeline/issues/401)) ([057d0e5](https://github.com/magenx/Magento-2-deployment-pipeline/commit/057d0e5d2f5db957f3ab0ed4b18ba98f436db781))
+* **workflow:** Update workflow names for clarity ([#420](https://github.com/magenx/Magento-2-deployment-pipeline/issues/420)) ([8857635](https://github.com/magenx/Magento-2-deployment-pipeline/commit/885763582edee5c75fa0c4f75ca76f25505b9246))
+* **workflow:** Upgrade git auto commit action ([#416](https://github.com/magenx/Magento-2-deployment-pipeline/issues/416)) ([bfaddca](https://github.com/magenx/Magento-2-deployment-pipeline/commit/bfaddca635a0335ec34e8a119a0e2459657ef601))
+
 ## [24.0.1-alpha.9](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1-alpha.8...v24.0.1-alpha.9) (2025-11-14)
 
 
