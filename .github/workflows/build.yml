@@ -51,7 +51,7 @@ jobs:
       - name: Set version for complete build
         id: set-build-version
         run: |
-          echo "ARTIFACT_NAME=release_$(date +%Y%m%d%H%M)-${{ github.event.release.tag_name }}.tar.gz" >> ${GITHUB_ENV}
+          echo "ARTIFACT_NAME=release_$(date +%Y%m%d%H%M)_${{ github.event.release.tag_name }}.tar.gz" >> ${GITHUB_ENV}
 
       - name: Package build artifact into tar archive
         id: tar-artifact
