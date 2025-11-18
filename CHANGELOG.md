@@ -1,5 +1,17 @@
 # Changelog
 
+## [24.0.3-alpha](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.2...v24.0.3-alpha) (2025-11-18)
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#447](https://github.com/magenx/Magento-2-deployment-pipeline/issues/447)) ([d78211f](https://github.com/magenx/Magento-2-deployment-pipeline/commit/d78211fae8fedbf5a52be018f409208caea90d51))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Fix artifact name format in build workflow ([#446](https://github.com/magenx/Magento-2-deployment-pipeline/issues/446)) ([9c3cbed](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9c3cbed612ca0147d13669059365aa358cf9610e))
+
 ## [24.0.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.1...v24.0.2) (2025-11-17)
 
 
