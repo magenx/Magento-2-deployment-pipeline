@@ -9,7 +9,7 @@ inputs:
 outputs:
   log:
     description: "The output of the eComscan scan"
-    value: ${{ steps.scan.outputs.log }}
+    value: ${{ steps.security-scan.outputs.log }}
 
 runs:
   using: "composite"
