@@ -48,6 +48,14 @@ jobs:
         with:
           ecomscan_key: ${{ secrets.ECOMSCAN_KEY }}
 
+      - name: Add Scan Results to Summary
+        id: security-scan-summary
+        run: |
+          echo "## 🔍 Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.security-scan.outputs.log }}" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
       - name: Set version for complete build
         id: set-build-version
         run: |
