@@ -1,5 +1,17 @@
 # Changelog
 
+## [24.0.4-alpha.1](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.4-alpha...v24.0.4-alpha.1) (2025-11-19)
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#456](https://github.com/magenx/Magento-2-deployment-pipeline/issues/456)) ([9cf7795](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9cf7795202872c766c00bb7f41bd4bd684bbe2ac))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Add output log to security scan action ([#455](https://github.com/magenx/Magento-2-deployment-pipeline/issues/455)) ([e0d8da8](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e0d8da8fc27e7f841fbccb84be432783a5d83ce9))
+
 ## [24.0.4-alpha](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.3...v24.0.4-alpha) (2025-11-19)
 
 
