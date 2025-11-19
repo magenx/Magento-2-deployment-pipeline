@@ -1,5 +1,17 @@
 # Changelog
 
+## [24.0.4-alpha](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.3...v24.0.4-alpha) (2025-11-19)
+
+
+### 🐛 Bug Fixes
+
+* Remove redundant line in PHP CS Fixer config ([#452](https://github.com/magenx/Magento-2-deployment-pipeline/issues/452)) ([b87591b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b87591b0b8c0fa4034f17bc456309d1116647da3))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Add security scan results summary step ([#451](https://github.com/magenx/Magento-2-deployment-pipeline/issues/451)) ([cc48e23](https://github.com/magenx/Magento-2-deployment-pipeline/commit/cc48e23a0b674a8e7525761ec29584b08265ec17))
+
 ## [24.0.3](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.2...v24.0.3) (2025-11-18)
 
 
