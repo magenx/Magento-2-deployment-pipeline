@@ -1,5 +1,17 @@
 # Changelog
 
+## [24.0.4-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.4-alpha.1...v24.0.4-alpha.2) (2025-11-19)
+
+
+### 🐛 Bug Fixes
+
+* Remove unnecessary whitespace in configuration file ([#460](https://github.com/magenx/Magento-2-deployment-pipeline/issues/460)) ([90da39c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/90da39c2b7383a787d9c67316037a6af7d0e080e))
+
+
+### 🚦 Maintenance
+
+* **workflow:** Fix output reference in security scan action ([#459](https://github.com/magenx/Magento-2-deployment-pipeline/issues/459)) ([9b8967d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9b8967d56dcc0010edc6a3b65a57163d1d3e58f5))
+
 ## [24.0.4-alpha.1](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.4-alpha...v24.0.4-alpha.1) (2025-11-19)
 
 
