@@ -1,5 +1,24 @@
 # Changelog
 
+## [24.0.4](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.3...v24.0.4) (2025-11-19)
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#456](https://github.com/magenx/Magento-2-deployment-pipeline/issues/456)) ([9cf7795](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9cf7795202872c766c00bb7f41bd4bd684bbe2ac))
+* Remove redundant line in PHP CS Fixer config ([#452](https://github.com/magenx/Magento-2-deployment-pipeline/issues/452)) ([b87591b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b87591b0b8c0fa4034f17bc456309d1116647da3))
+* Remove unnecessary whitespace in configuration file ([#460](https://github.com/magenx/Magento-2-deployment-pipeline/issues/460)) ([90da39c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/90da39c2b7383a787d9c67316037a6af7d0e080e))
+
+
+### 🚦 Maintenance
+
+* **main:** magenxcloud 24.0.4-alpha ([#453](https://github.com/magenx/Magento-2-deployment-pipeline/issues/453)) ([49a9219](https://github.com/magenx/Magento-2-deployment-pipeline/commit/49a9219f19c464bedca5d83da5b044efb90a9b99))
+* **main:** magenxcloud 24.0.4-alpha.1 ([#457](https://github.com/magenx/Magento-2-deployment-pipeline/issues/457)) ([ee2dbb7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ee2dbb72cf8dc7b350ecde7cc377eae43d53fe57))
+* **main:** magenxcloud 24.0.4-alpha.2 ([#461](https://github.com/magenx/Magento-2-deployment-pipeline/issues/461)) ([4de0245](https://github.com/magenx/Magento-2-deployment-pipeline/commit/4de02450ba4ce14caff9d31be2a8cc5e74e8ed4b))
+* **workflow:** Add output log to security scan action ([#455](https://github.com/magenx/Magento-2-deployment-pipeline/issues/455)) ([e0d8da8](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e0d8da8fc27e7f841fbccb84be432783a5d83ce9))
+* **workflow:** Add security scan results summary step ([#451](https://github.com/magenx/Magento-2-deployment-pipeline/issues/451)) ([cc48e23](https://github.com/magenx/Magento-2-deployment-pipeline/commit/cc48e23a0b674a8e7525761ec29584b08265ec17))
+* **workflow:** Fix output reference in security scan action ([#459](https://github.com/magenx/Magento-2-deployment-pipeline/issues/459)) ([9b8967d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9b8967d56dcc0010edc6a3b65a57163d1d3e58f5))
+
 ## [24.0.4-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.4-alpha.1...v24.0.4-alpha.2) (2025-11-19)
 
 
