@@ -41,15 +41,23 @@ jobs:
           static_content_deploy: "-f -n --no-ansi -j $(nproc)"
           debug_command: "bin/magento"
 
-      - name: Call a security-scan action
+      - name: Call a security scan action
         id: security-scan
         if: ${{ !cancelled() }}
         uses: ./.github/actions/security-scan
         with:
           ecomscan_key: ${{ secrets.ECOMSCAN_KEY }}
+      
+      - name: Check security scan issues
+        id: security-scan-issues
+        if: ${{ !cancelled() }}
+        run: |
+          security_scan_issues=$(jq '.ctx.scan_issues' security_scan.log)
+          echo "issues_count=$security_scan_issues" >> $GITHUB_OUTPUT
 
       - name: Upload security scan
         id: upload-security-scan
+        if: ${{ !cancelled() && steps.security-scan-issues.outputs.issues_count > 0 }}
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
           name: "security_scan.log"
