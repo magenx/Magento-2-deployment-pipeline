@@ -13,7 +13,7 @@ jobs:
         ### for extended configuration files
       - name: Checkout latest tag
         id: checkout-latest-tag
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #v6.0.0
 
       - name: ZAP Scan
         uses: zaproxy/action-baseline@7c4deb10e6261301961c86d65d54a516394f9aed #v0.14.0
