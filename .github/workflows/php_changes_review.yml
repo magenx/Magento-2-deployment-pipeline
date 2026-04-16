@@ -1,0 +1,23 @@
+name: Ask Copilot to review PHP changes
+
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - '**.php'
+      - '**.phtml'
+
+permissions:
+  pull-requests: write
+
+jobs:
+  ping-copilot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment @copilot
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr comment "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "@copilot review these php/phtml changes."
