@@ -47,20 +47,12 @@ jobs:
         uses: ./.github/actions/security-scan
         with:
           ecomscan_key: ${{ secrets.ECOMSCAN_KEY }}
-      
-      - name: Check security scan issues
-        id: security-scan-issues
-        if: ${{ !cancelled() }}
-        run: |
-          security_scan_issues=$(jq '.ctx.scan_issues' security_scan.log)
-          echo "issues_count=$security_scan_issues" >> $GITHUB_OUTPUT
 
       - name: Upload security scan
         id: upload-security-scan
-        if: ${{ !cancelled() && steps.security-scan-issues.outputs.issues_count > 0 }}
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
         with:
-          name: "security_scan.log"
+          name: "security_scan_${{ github.event.release.tag_name }}.log"
           overwrite: true
           path: ${{ runner.temp }}/security_scan.log
 
@@ -127,6 +119,7 @@ jobs:
             COMMENT+="- **ARTIFACT_URL**: ${{ steps.upload-artifact.outputs.artifact-url }}\n"
             COMMENT+="- **RUN_ID**: ${GITHUB_RUN_ID}\n"
             COMMENT+="- **RUN_URL**: https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\n"
+            COMMENT+="- **SECURITY_SCAN**: ${{ steps.upload-security-scan.outputs.artifact-url }}\n"
           fi
           
           COMMENT+="\n@${GITHUB_REPOSITORY_OWNER} Please review this PR.\n"
@@ -160,20 +153,21 @@ jobs:
             --body-file comment.txt
 
       - name: Trigger pre-release deployment workflow
-        id: payload
-        uses: peter-evans/repository-dispatch@5fc4efd1a4797ddb68ffd0714a238564e4cc0e6f #v4.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: deployment
-          client-payload: |-
-            {
-              "environment": "staging",
-              "artifact_name": "${{ env.ARTIFACT_NAME }}",
-              "artifact_url": "${{ steps.upload-artifact.outputs.artifact-url }}",
-              "artifact_digest": "${{ steps.upload-artifact.outputs.artifact-digest }}",
-              "artifact_run_id" : "${{ github.run_id }}",
-              "tag_name": "${{ github.event.release.tag_name }}"
-            }
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api \
+          --method POST \
+          --header "Accept: application/vnd.github+json" \
+          --header "X-GitHub-Api-Version: 2026-03-10" \
+          /repos/${{ github.repository }}/dispatches \
+          -f 'event_type=deployment' \
+          -f 'client_payload[environment]=staging' \
+          -f 'client_payload[artifact_name]=${{ env.ARTIFACT_NAME }}' \
+          -f 'client_payload[artifact_url]=${{ steps.upload-artifact.outputs.artifact-url }}' \
+          -f 'client_payload[artifact_digest]=${{ steps.upload-artifact.outputs.artifact-digest }}' \
+          -F 'client_payload[artifact_run_id]=${{ github.run_id }}' \
+          -f 'client_payload[tag_name]=${{ github.event.release.tag_name }}'
 
       - name: Rename pre-release artifact tag to release ready artifact
         id: rename-artifact
