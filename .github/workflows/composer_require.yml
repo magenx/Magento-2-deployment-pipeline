@@ -9,7 +9,7 @@ on:
       - "composer.json"
 
 env:
-  PHP_VERSION: 8.2
+  PHP_VERSION: ${{ vars.PHP_VERSION }}
 
 permissions:
   contents: write
@@ -107,21 +107,24 @@ jobs:
         run: |
           echo "config_changed=$(git diff --quiet app/etc/config.php && echo false || echo true)" >> "${GITHUB_OUTPUT}"
 
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Commit updated config.php back to PR branch
-        id: config-commit
         if: ${{ steps.git-diff-config.outputs.config_changed == 'true' }}
-        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 #v7.0.0
-        with:
-          commit_message: "chore(config): Update app/etc/config.php after module enable"
-          file_pattern: app/etc/config.php
+        run: |
+          git add app/etc/config.php
+          git commit -m "chore(config): Update app/etc/config.php after module enable"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
 
       - name: Commit updated composer.lock back to PR branch
-        id: composer-lock-commit
         if: ${{ steps.composer-diff.outputs.require == 'true' }}
-        uses: stefanzweifel/git-auto-commit-action@28e16e81777b558cc906c8750092100bbb34c5e3 #v7.0.0
-        with:
-          commit_message: "chore(composer): Update composer.lock to match composer.json"
-          file_pattern: composer.lock
+        run: |
+          git add composer.lock
+          git commit -m "chore(composer): Update composer.lock to match composer.json"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
 
       - name: Composer require review comment to PR
         if: ${{ steps.composer-diff.outputs.require == 'true' }}
@@ -135,7 +138,7 @@ jobs:
           > composer.json:
           $MODULES_REQUIRE"
       
-      - name: Composer remove review comment to PR
+      - name: Composer modules remove review comment to PR
         if: ${{ steps.composer-diff.outputs.remove == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,7 +150,7 @@ jobs:
           > composer.json:
           $MODULES_REMOVE"
       
-      - name: Composer lock review comment to PR
+      - name: Composer lock changes review comment to PR
         if: ${{ steps.composer-lock-diff.outputs.locked == 'true' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
