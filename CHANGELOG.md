@@ -1,5 +1,21 @@
 # Changelog
 
+## [24.1.0-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.4-alpha.2...v24.1.0-alpha.2) (2026-04-16)
+
+
+### 🚀 Features
+
+* Update Magento product version to 2.4.8-p4 ([#493](https://github.com/magenx/Magento-2-deployment-pipeline/issues/493)) ([4e4315a](https://github.com/magenx/Magento-2-deployment-pipeline/commit/4e4315acaf8f232676b42fbb5259328b1ff93063))
+
+
+### 🚦 Maintenance
+
+* **deps:** bump actions/labeler from 5.0.0 to 6.0.1 ([#470](https://github.com/magenx/Magento-2-deployment-pipeline/issues/470)) ([755133d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/755133d5b88955138ce7a0c5be99f04945245508))
+* **deps:** bump zaproxy/action-baseline from 0.14.0 to 0.15.0 ([#468](https://github.com/magenx/Magento-2-deployment-pipeline/issues/468)) ([8ffaf13](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8ffaf132e5edcda5e8a29b0e99bf48c9c1c9d5a8))
+* **workflow:** Add security scan actions to build workflow ([#464](https://github.com/magenx/Magento-2-deployment-pipeline/issues/464)) ([f3232f4](https://github.com/magenx/Magento-2-deployment-pipeline/commit/f3232f4c2f444832671f13cea590d12ce8de0bc2))
+* **workflow:** Remove verbose flag from ecomscan command ([#465](https://github.com/magenx/Magento-2-deployment-pipeline/issues/465)) ([d5e556b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/d5e556bbe75482baf0b27eab0a03f164257c599f))
+* **workflow:** Update security scan step to upload results as artifact ([#463](https://github.com/magenx/Magento-2-deployment-pipeline/issues/463)) ([1fee904](https://github.com/magenx/Magento-2-deployment-pipeline/commit/1fee904fd4bea2a2a5fa41e7b2ce5c123eac5d0a))
+
 ## [24.0.4-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.4-alpha.1...v24.0.4-alpha.2) (2025-11-19)
 
 
