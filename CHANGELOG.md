@@ -1,5 +1,35 @@
 # Changelog
 
+## [24.1.0](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.3...v24.1.0) (2026-04-16)
+
+
+### 🚀 Features
+
+* Update Magento product version to 2.4.8-p4 ([#493](https://github.com/magenx/Magento-2-deployment-pipeline/issues/493)) ([4e4315a](https://github.com/magenx/Magento-2-deployment-pipeline/commit/4e4315acaf8f232676b42fbb5259328b1ff93063))
+
+
+### 🐛 Bug Fixes
+
+* Add PHP Coding Standards fixer configuration comment ([#456](https://github.com/magenx/Magento-2-deployment-pipeline/issues/456)) ([9cf7795](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9cf7795202872c766c00bb7f41bd4bd684bbe2ac))
+* Remove redundant line in PHP CS Fixer config ([#452](https://github.com/magenx/Magento-2-deployment-pipeline/issues/452)) ([b87591b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/b87591b0b8c0fa4034f17bc456309d1116647da3))
+* Remove unnecessary whitespace in configuration file ([#460](https://github.com/magenx/Magento-2-deployment-pipeline/issues/460)) ([90da39c](https://github.com/magenx/Magento-2-deployment-pipeline/commit/90da39c2b7383a787d9c67316037a6af7d0e080e))
+
+
+### 🚦 Maintenance
+
+* **deps:** bump actions/labeler from 5.0.0 to 6.0.1 ([#470](https://github.com/magenx/Magento-2-deployment-pipeline/issues/470)) ([755133d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/755133d5b88955138ce7a0c5be99f04945245508))
+* **deps:** bump zaproxy/action-baseline from 0.14.0 to 0.15.0 ([#468](https://github.com/magenx/Magento-2-deployment-pipeline/issues/468)) ([8ffaf13](https://github.com/magenx/Magento-2-deployment-pipeline/commit/8ffaf132e5edcda5e8a29b0e99bf48c9c1c9d5a8))
+* **main:** magenxcloud 24.0.4-alpha ([#453](https://github.com/magenx/Magento-2-deployment-pipeline/issues/453)) ([49a9219](https://github.com/magenx/Magento-2-deployment-pipeline/commit/49a9219f19c464bedca5d83da5b044efb90a9b99))
+* **main:** magenxcloud 24.0.4-alpha.1 ([#457](https://github.com/magenx/Magento-2-deployment-pipeline/issues/457)) ([ee2dbb7](https://github.com/magenx/Magento-2-deployment-pipeline/commit/ee2dbb72cf8dc7b350ecde7cc377eae43d53fe57))
+* **main:** magenxcloud 24.0.4-alpha.2 ([#461](https://github.com/magenx/Magento-2-deployment-pipeline/issues/461)) ([4de0245](https://github.com/magenx/Magento-2-deployment-pipeline/commit/4de02450ba4ce14caff9d31be2a8cc5e74e8ed4b))
+* **main:** magenxcloud 24.1.0-alpha.2 ([#462](https://github.com/magenx/Magento-2-deployment-pipeline/issues/462)) ([07e70bd](https://github.com/magenx/Magento-2-deployment-pipeline/commit/07e70bde93434d86989af5abc5a326f5771a53ce))
+* **workflow:** Add output log to security scan action ([#455](https://github.com/magenx/Magento-2-deployment-pipeline/issues/455)) ([e0d8da8](https://github.com/magenx/Magento-2-deployment-pipeline/commit/e0d8da8fc27e7f841fbccb84be432783a5d83ce9))
+* **workflow:** Add security scan actions to build workflow ([#464](https://github.com/magenx/Magento-2-deployment-pipeline/issues/464)) ([f3232f4](https://github.com/magenx/Magento-2-deployment-pipeline/commit/f3232f4c2f444832671f13cea590d12ce8de0bc2))
+* **workflow:** Add security scan results summary step ([#451](https://github.com/magenx/Magento-2-deployment-pipeline/issues/451)) ([cc48e23](https://github.com/magenx/Magento-2-deployment-pipeline/commit/cc48e23a0b674a8e7525761ec29584b08265ec17))
+* **workflow:** Fix output reference in security scan action ([#459](https://github.com/magenx/Magento-2-deployment-pipeline/issues/459)) ([9b8967d](https://github.com/magenx/Magento-2-deployment-pipeline/commit/9b8967d56dcc0010edc6a3b65a57163d1d3e58f5))
+* **workflow:** Remove verbose flag from ecomscan command ([#465](https://github.com/magenx/Magento-2-deployment-pipeline/issues/465)) ([d5e556b](https://github.com/magenx/Magento-2-deployment-pipeline/commit/d5e556bbe75482baf0b27eab0a03f164257c599f))
+* **workflow:** Update security scan step to upload results as artifact ([#463](https://github.com/magenx/Magento-2-deployment-pipeline/issues/463)) ([1fee904](https://github.com/magenx/Magento-2-deployment-pipeline/commit/1fee904fd4bea2a2a5fa41e7b2ce5c123eac5d0a))
+
 ## [24.1.0-alpha.2](https://github.com/magenx/Magento-2-deployment-pipeline/compare/v24.0.4-alpha.2...v24.1.0-alpha.2) (2026-04-16)
 
 
