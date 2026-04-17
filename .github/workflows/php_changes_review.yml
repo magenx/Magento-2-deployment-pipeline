@@ -14,10 +14,10 @@ jobs:
   ping-copilot:
     runs-on: ubuntu-latest
     steps:
-      - name: Comment @copilot
+      - name: Request Copilot review
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr comment "${{ github.event.pull_request.number }}" \
-            --repo "${{ github.repository }}" \
-            --body "@copilot review these php/phtml changes."
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --repo ${{ github.repository }} \
+            --add-reviewer "@copilot"
