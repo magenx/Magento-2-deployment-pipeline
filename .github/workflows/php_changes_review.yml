@@ -14,6 +14,15 @@ jobs:
   ping-copilot:
     runs-on: ubuntu-latest
     steps:
+      - name: Request Copilot review via API headers
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euxo pipefail
+          gh api -i -X POST \
+          "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers" \
+          -f reviewers[]="@copilot"
+
       - name: Request Copilot review via API
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
