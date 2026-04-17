@@ -19,6 +19,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
+          gh --version
           gh pr edit ${{ github.event.pull_request.number }} \
             --repo ${{ github.repository }} \
             --add-reviewer @copilot
