@@ -14,11 +14,12 @@ jobs:
   ping-copilot:
     runs-on: ubuntu-latest
     steps:
-      - name: Request Copilot review via API headers
+      - name: Request Copilot review
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
           gh pr edit ${{ github.event.pull_request.number }} \
             --repo ${{ github.repository }} \
-            --add-reviewer "@copilot"
+            --add-reviewer @copilot
+            
