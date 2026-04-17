@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 
-use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Http\PhpEnvironment\Request
 use Magento\Framework\App\Bootstrap;
 use Magento\Framework\App\ProductMetadata;
 use Magento\Setup\Model\License;
@@ -12,7 +12,7 @@ use Magento\Setup\Model\License;
 if (PHP_SAPI == 'cli') {
     echo "You cannot run this from the command line." . PHP_EOL .
         "Run \"php bin/magento\" instead." . PHP_EOL;
-    exit(1);
+    exit(1
 }
 try {
     require __DIR__ . '/../app/bootstrap.php';
