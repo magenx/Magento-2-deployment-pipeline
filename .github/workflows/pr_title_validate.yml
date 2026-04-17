@@ -24,11 +24,11 @@ jobs:
             ci
             chore
           requireScope: false
-          subjectPattern: ^[A-Z]([\[\]().-\w]+\s){4,}\w+$
+          subjectPattern: ^[A-Z].+$
           subjectPatternError: |
             The subject "{subject}" found in the pull request title "{title}"
             didn't match the configured pattern. Please ensure that the subject
-            starts with an uppercase character and is 5 words long.
+            starts with an uppercase character.
           wip: true
           validateSingleCommit: false
           ignoreLabels: |
