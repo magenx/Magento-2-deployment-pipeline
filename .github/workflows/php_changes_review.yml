@@ -18,10 +18,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          set -euxo pipefail
-          gh api \
-          --method POST \
-          -H "Accept: application/vnd.github+json" \
-          -H "X-GitHub-Api-Version: 2026-03-10" \
-          /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
-          --input - <<< '{ "reviewers": ["copilot"] }'
+          set -e
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --repo ${{ github.repository }} \
+            --add-reviewer "@copilot"
