@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 
-use Laminas\Http\PhpEnvironment\Request;
+use Laminas\Http\PhpEnvironment\Request
 use Magento\Framework\App\Bootstrap;
 use Magento\Framework\App\ProductMetadata;
 use Magento\Setup\Model\License;
@@ -26,7 +26,7 @@ try {
     <p>{$e->getMessage()}</p>
 </div>
 HTML;
-    exit(1);
+    exit(1
 }
 
 // For Setup Wizard we are using our customized error handler
@@ -34,9 +34,7 @@ $handler = new \Magento\Framework\App\ErrorHandler();
 set_error_handler([$handler, 'handler']);
 
 // Render Setup Wizard landing page
-$objectManager = Bootstrap::create(BP, $_SERVER)->getObjectManager();
-
-$licenseClass = $objectManager->create(License::class);
+$objectManager = Bootstrap::create(BP, $_SERVER)->getObjectManager();$licenseClass = $objectManager->create(License::class);
 $metaClass = $objectManager->create(ProductMetadata::class);
 /** @var License $license */
 $license = $licenseClass->getContents();
