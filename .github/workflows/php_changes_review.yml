@@ -35,13 +35,22 @@ jobs:
           php -v
 
       - name: Download PHP CS Fixer
-        id: phpcsfixer
+        id: get_phpcsfixer
         run: |
           curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer
           chmod +x php-cs-fixer
 
+      - name: Validate PHP Syntax
+        id: lint_changed_files
+        run: |
+          files=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} | grep -E '\.(php|phtml)$' | tr '\n' ' ') || true
+          if [ -n "$files" ]; then
+            echo "Checking syntax: $files"
+            php -l $files
+          fi
+
       - name: Format PHP/PHTML Code
-        id: changed_files
+        id: phpcsfix_changed_files
         run: |
           # Get the list of changed .php and .phtml files
           files=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} | grep -E '\.(php|phtml)$' | tr '\n' ' ') || true
@@ -56,6 +65,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          rm ./php-cs-fixer
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.github.com"
 
@@ -66,14 +76,4 @@ jobs:
           else
             echo "No formatting changes to commit."
           fi
-
-      - name: Request Copilot review
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-          gh --version
-          gh pr edit ${{ github.event.pull_request.number }} \
-            --repo ${{ github.repository }} \
-            --add-reviewer @copilot
             
