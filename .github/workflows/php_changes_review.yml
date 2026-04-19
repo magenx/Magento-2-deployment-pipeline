@@ -1,19 +1,72 @@
-name: Ask Copilot to review PHP changes
+name: PHP CS Fixer and Commit
 
 on:
   pull_request:
-    types: [opened]
     paths:
-      - '**.php'
-      - '**.phtml'
+      - '**/*.php'
+      - '**/*.phtml'
 
 permissions:
+  contents: write
   pull-requests: write
 
 jobs:
-  ping-copilot:
+  php-cs-fixer:
+    name: Format PHP/PHTML Files and Commit
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout the Code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP ${{ vars.PHP_VERSION }}
+        id: php
+        run: |
+          apt-get update
+          apt-get install -y software-properties-common
+          add-apt-repository -y ppa:ondrej/php
+          apt-get update
+          apt-get install -y \
+            php${{ vars.PHP_VERSION }} \
+            php${{ vars.PHP_VERSION }}-cli \
+            php${{ vars.PHP_VERSION }}-mbstring \
+            php${{ vars.PHP_VERSION }}-xml
+          php -v
+
+      - name: Download PHP CS Fixer
+        id: phpcsfixer
+        run: |
+          curl -L https://github.com/FriendsOfPHP/PHP-CS-Fixer/releases/latest/download/php-cs-fixer.phar -o php-cs-fixer
+          chmod +x php-cs-fixer
+
+      - name: Format PHP/PHTML Code
+        id: changed_files
+        run: |
+          # Get the list of changed .php and .phtml files
+          files=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} | grep -E '\.(php|phtml)$' | tr '\n' ' ') || true
+          if [ -n "$files" ]; then
+            echo "Formatting: $files"
+            ./php-cs-fixer fix $files --config=.php-cs-fixer.dist.php --allow-risky=yes --using-cache=no
+          else
+            echo "No PHP/PHTML files changed in this pull request."
+          fi
+
+      - name: Commit Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.github.com"
+
+          if [[ -n $(git status --porcelain) ]]; then
+            git add .
+            git commit -m "Apply PHP CS Fixer formatting"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          else
+            echo "No formatting changes to commit."
+          fi
+
       - name: Request Copilot review
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
