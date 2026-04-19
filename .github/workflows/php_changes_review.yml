@@ -77,3 +77,12 @@ jobs:
             echo "No formatting changes to commit."
           fi
             
+      - name: Request Copilot review
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+        run: |
+          set -e
+          gh --version
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --repo ${{ github.repository }} \
+            --add-reviewer @copilot
