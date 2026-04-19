@@ -9,6 +9,7 @@ use Magento\Framework\App\Bootstrap;
 use Magento\Framework\App\ProductMetadata;
 use Magento\Setup\Model\License;
 
+
 if (PHP_SAPI == 'cli') {
     echo "You cannot run this from the command line." . PHP_EOL .
         "Run \"php bin/magento\" instead." . PHP_EOL;
