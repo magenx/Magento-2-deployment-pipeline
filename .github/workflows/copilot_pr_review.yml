@@ -1,0 +1,41 @@
+name: Copilot PR review
+
+on:
+  pull_request:
+    paths:
+      - '**.php'
+      - '**.phtml'
+      - '**.js'
+      - '**.xml'
+
+permissions:
+  pull-requests: write
+
+jobs:
+  copilot_pr_review:
+    if: "${{ !startsWith(github.head_ref, 'release-please') || !contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}"
+    name: Copilot code review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the Code
+        id: checkout
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Copilot code review
+        id: copilot
+        env:
+          GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+        run: |
+          # Get the list of changed .php .phtml .js .xml files
+          files=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} | grep -E '\.(php|phtml|js|xml)$') || true
+          if [ -n "$files" ]; then
+            echo "Copilot code review: $files"
+            gh pr edit ${{ github.event.pull_request.number }} \
+            --repo ${{ github.repository }} \
+            --add-reviewer @copilot
+          else
+            echo "No files changed in this pull request."
+          fi
+
