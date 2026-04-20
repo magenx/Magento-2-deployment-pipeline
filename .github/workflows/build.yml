@@ -50,7 +50,7 @@ jobs:
 
       - name: Upload security scan
         id: upload-security-scan
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #v7.0.1
         with:
           name: "security_scan_${{ github.event.release.tag_name }}.log"
           overwrite: true
@@ -75,7 +75,7 @@ jobs:
 
       - name: Upload pre-release build artifact
         id: upload-artifact
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #v7.0.1
         with:
           name: "${{ env.ARTIFACT_NAME }}"
           overwrite: true
@@ -179,7 +179,7 @@ jobs:
 
       - name: Upload release build artifact
         id: upload-release-artifact
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #v7.0.1
         with:
           name: "${{ env.ARTIFACT_NAME }}"
           overwrite: true
