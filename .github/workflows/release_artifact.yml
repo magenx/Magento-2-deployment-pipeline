@@ -55,17 +55,18 @@ jobs:
             ${{ steps.find-artifact.outputs.artifact_url }}
 
       - name: Trigger post-release deployment workflow
-        id: payload
-        uses: peter-evans/repository-dispatch@5fc4efd1a4797ddb68ffd0714a238564e4cc0e6f #v4.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: deployment
-          client-payload: |-
-            {
-              "environment": "production",
-              "artifact_name": "${{ steps.find-artifact.outputs.artifact_name }}",
-              "artifact_url": "${{ steps.find-artifact.outputs.artifact_url }}",
-              "artifact_digest": "${{ steps.find-artifact.outputs.artifact_digest }}",
-              "artifact_run_id" : "${{ steps.find-artifact.outputs.artifact_run_id }}",
-              "tag_name": "${{ github.event.release.tag_name || inputs.tag_name }}"
-            }
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api \
+          --method POST \
+          --header "Accept: application/vnd.github+json" \
+          --header "X-GitHub-Api-Version: 2026-03-10" \
+          /repos/${{ github.repository }}/dispatches \
+          -f 'event_type=deployment' \
+          -f 'client_payload[environment]=production' \
+          -f 'client_payload[artifact_name]=${{ steps.find-artifact.outputs.artifact_name }}' \
+          -f 'client_payload[artifact_url]=${{ steps.find-artifact.outputs.artifact-url }}' \
+          -f 'client_payload[artifact_digest]=${{ steps.find-artifact.outputs.artifact-digest }}' \
+          -F 'client_payload[artifact_run_id]=${{ github.run_id }}' \
+          -f 'client_payload[tag_name]=${{ github.event.release.tag_name }}'
