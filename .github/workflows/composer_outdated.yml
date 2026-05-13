@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  PHP_VERSION: 8.2
+  PHP_VERSION: ${{ vars.PHP_VERSION }}
 
 jobs:
   composer-outdated:
