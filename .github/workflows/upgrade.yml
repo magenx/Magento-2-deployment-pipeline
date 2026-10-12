@@ -2,6 +2,11 @@ name: Upgrade all to the latest version
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Target magento/product-community-edition version (empty = latest stable)"
+        required: false
+        type: string
 
 env:
   PHP_VERSION: ${{ vars.PHP_VERSION }}
@@ -9,46 +14,70 @@ env:
 jobs:
   update-magento:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
+      # PAT: a PR opened with GITHUB_TOKEN never runs the required checks
       - name: Checkout code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #v7.0.0
         with:
           ref: main
+          token: ${{ secrets.MAGENX_CI_GITHUB_TOKEN || github.token }}
 
       - name: Set up PHP
         uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc #v2.37.1
         with:
           php-version: '${{ env.PHP_VERSION }}'
 
+      - name: Resolve target version
+        id: version
+        env:
+          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
+          TARGET: ${{ inputs.version }}
+        run: |
+          current="$(composer show magento/product-community-edition --locked --format=json | jq -r '.versions[0]')"
+          if [ -z "${TARGET}" ]; then
+            # newest stable 2.x.y or 2.x.y-pN from repo.magento.com (GitHub tag order is not version order)
+            TARGET="$(composer show magento/product-community-edition --all --format=json \
+              | jq -r '[.versions[] | select(test("^[0-9]+\\.[0-9]+\\.[0-9]+(-p[0-9]+)?$"))] | first')"
+          fi
+          echo "MAGENTO CURRENT ${current} LATEST ${TARGET}"
+          if [ "${current}" = "${TARGET}" ]; then
+            echo "::notice::Already on ${current}"
+            exit 0
+          fi
+          echo "MAGENTO_VERSION=${TARGET}" >> "${GITHUB_ENV}"
+
       - name: Upgrade all
+        if: ${{ env.MAGENTO_VERSION != '' }}
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         run: |
-          MAGENTO_LATEST=$(curl -s https://api.github.com/repos/magento/magento2/tags 2>&1 | grep -m1 -oP '(?<=name": ")[0-9].*-p.*(?=")')
-          echo "MAGENTO LATEST VERSION ${MAGENTO_LATEST}"
-          echo MAGENTO_VERSION=${MAGENTO_LATEST} >> ${GITHUB_ENV}
-          composer update -W
-          composer require-commerce magento/product-community-edition=${MAGENTO_LATEST} --no-update
-          composer update -W
+          composer install --no-interaction --no-progress
+          composer require-commerce "magento/product-community-edition=${MAGENTO_VERSION}" --no-update --no-interaction
+          composer update -W --no-interaction --no-progress
 
       - name: Configure Git
+        if: ${{ env.MAGENTO_VERSION != '' }}
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Create PR and review changes
+        if: ${{ env.MAGENTO_VERSION != '' }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.MAGENX_CI_GITHUB_TOKEN || github.token }}
         run: |
           BRANCH="upgrade-magento-${MAGENTO_VERSION}-$(date +%s)"
           git checkout -b "${BRANCH}"
 
-          git add .
-          git commit -m "Upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}"
+          git add composer.json composer.lock
+          git commit -m "feat(upgrade)!: Upgrade to ${MAGENTO_VERSION} with PHP ${PHP_VERSION}"
           git push origin "${BRANCH}"
 
-          gh pr create --title "feat!(upgrade): Upgrade all with ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
+          gh pr create --title "feat(upgrade)!: Upgrade all with ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
           --body "Auto upgrade all with ${MAGENTO_VERSION} with PHP ${PHP_VERSION}" \
           --base main \
           --head "${BRANCH}"

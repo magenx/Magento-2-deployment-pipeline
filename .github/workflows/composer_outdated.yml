@@ -35,7 +35,7 @@ jobs:
         env:
           COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
         run: |
-          composer install --no-dev --no-ansi --no-interaction --no-progress --no-suggest
+          composer install --no-dev --no-ansi --no-interaction --no-progress
 
       - name: Check for outdated packages
         id: composer-outdated

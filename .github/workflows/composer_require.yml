@@ -112,19 +112,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Commit updated config.php back to PR branch
-        if: ${{ steps.git-diff-config.outputs.config_changed == 'true' }}
+      - name: Commit composer.lock and config.php back to PR branch
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
-          git add app/etc/config.php
-          git commit -m "chore(config): Update app/etc/config.php after module enable"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
-
-      - name: Commit updated composer.lock back to PR branch
-        if: ${{ steps.composer-diff.outputs.require == 'true' }}
-        run: |
-          git add composer.lock
-          git commit -m "chore(composer): Update composer.lock to match composer.json"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git add composer.lock app/etc/config.php
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore(composer): Sync composer.lock and app/etc/config.php"
+          git push origin "HEAD:${HEAD_REF}"
 
       - name: Composer require review comment to PR
         if: ${{ steps.composer-diff.outputs.require == 'true' }}
