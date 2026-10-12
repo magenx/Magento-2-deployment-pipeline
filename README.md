@@ -73,6 +73,59 @@ Publishes the official, production-ready release after all tests, approvals, and
   - set "Contents", "Issues" and "Pull requests" to "Read and write"
 - copy the generated token to a new MAGENX_CI_GITHUB_TOKEN repository secret on the Github repository
   
+## Configuration
+
+Settings → Secrets and variables → Actions. Secrets go under **Secrets**, variables under **Variables**.
+Deploy secrets can also be stored as environment secrets on `staging` / `production`.
+
+### Secrets
+
+| Secret | Required | Used by | Value |
+|---|---|---|---|
+| `MAGENX_CI_GITHUB_TOKEN` | yes | `release.yml`, `upgrade.yml` | Fine-grained PAT, this repository only: Contents, Issues, Pull requests = Read and write (see [PAT setup](#setup-github-pat-for-the-repository)). Releases and PRs made with `GITHUB_TOKEN` do not trigger other workflows |
+| `COMPOSER_AUTH` | yes | `build.yml`, `composer_require.yml`, `composer_outdated.yml`, `upgrade.yml` | `{"http-basic":{"repo.magento.com":{"username":"<public key>","password":"<private key>"}}}` (add other private repositories to the same JSON) |
+| `AWS_ACCESS_KEY_ID` | yes | `deploy.yml` | S3 access key, write access to `releases/*` of the bucket only |
+| `AWS_SECRET_ACCESS_KEY` | yes | `deploy.yml` | S3 secret key |
+| `AWS_REGION` | yes | `deploy.yml` | Bucket region, e.g. `eu-central-1` or the provider region (`fsn1`, `nbg1`, ...) |
+| `S3_BUCKET` | yes | `deploy.yml` | Bucket name; artifacts go to `s3://<bucket>/releases/<artifact>` |
+| `S3_ENDPOINT` | S3-compatible only | `deploy.yml` | Endpoint URL, e.g. `https://fsn1.your-objectstorage.com`; leave unset for AWS |
+| `DEPLOY_WEBHOOK_URL` | yes | `deploy.yml` | magenx-deputy-go URL, e.g. `https://deploy.example.com:8082/deploy` |
+| `DEPLOY_WEBHOOK_SECRET` | yes | `deploy.yml` | Sent as `X-Webhook-Secret`; same value as deputy `webhook_secret` |
+| `SIGNATURE_HMAC_KEY` | yes | `deploy.yml` | HMAC-SHA256 key for `X-Signature`; same value as deputy `hmac_key` |
+| `ECOMSCAN_KEY` | yes | `build.yml` | eComscan license key for the build security scan |
+| `WEBSITE_URL` | for ZAP / PageSpeed | `zap_scan.yml`, `pagespeed.yml` | Store URL that ZAP scans after each successful deploy and PageSpeed measures, e.g. `https://www.example.com` |
+| `PSI_API_KEY` | for PageSpeed | `pagespeed.yml` | Google PageSpeed Insights API key |
+| `CRUX_API_KEY` | for PageSpeed | `pagespeed.yml` | Chrome UX Report API key |
+| `COPILOT_TOKEN` | for Copilot review | `copilot_pr_review.yml` | Token allowed to request Copilot as PR reviewer |
+| `GITHUB_TOKEN` | automatic | all | Provided by GitHub, nothing to set |
+
+Generate the webhook keys with `openssl rand -hex 32`.
+
+### Variables
+
+| Variable | Required | Used by | Value |
+|---|---|---|---|
+| `PHP_VERSION` | yes | `build.yml`, `composer_require.yml`, `composer_outdated.yml`, `upgrade.yml` | PHP version supported by the Magento release, e.g. `8.3` or `8.4` for 2.4.8 |
+| `PRERELEASE_TYPE` | yes | `release.yml`, `build.yml`, `deploy.yml` | `alpha`; must match `prerelease-type` in `.github/release/prerelease-config.json`. `release.yml` compares the tag against it with no default, so leaving it unset breaks the pre-release → release PR handover |
+| `DEPLOY_WEBHOOK_TIMEOUT` | no (default `960`) | `deploy.yml` | Seconds to wait for deputy; keep above deputy `deployment_timeout_seconds` (default 900) |
+
+### Environments
+
+Settings → Environments: create `staging` and `production` (names must match, `deploy.yml` uses the
+`environment` from the dispatch payload). On `production` add required reviewers so every production deploy
+is approved and logged.
+
+### magenx-deputy-go mapping
+
+| Pipeline | deputy `config.yaml` |
+|---|---|
+| `DEPLOY_WEBHOOK_SECRET` | `webhook_secret` |
+| `SIGNATURE_HMAC_KEY` | `hmac_key` |
+| `S3_BUCKET` | `deploy.s3_bucket`, or the brand name when `deploy.s3_bucket_per_brand: true` |
+| `S3_ENDPOINT`, `AWS_REGION` | `deploy.s3_endpoint`, `deploy.s3_region` (deputy reads its own S3 keys from `/etc/magenx-deputy-go/env`) |
+| `releases/` prefix | `deploy.s3_prefix: releases` |
+| `DEPLOY_WEBHOOK_TIMEOUT` | greater than `deployment_timeout_seconds` |
+
 ## A Better Deployments Pattern  
 > [!TIP]
 > Use remote storage (like S3 or container registries).  
