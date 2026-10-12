@@ -5,10 +5,13 @@ on:
     types: [deployment]
 
 env:
-  PRERELEASE_TYPE: ${{ vars.PRERELEASE_TYPE }}
+  PRERELEASE_TYPE: ${{ vars.PRERELEASE_TYPE || 'alpha' }}
+  DEPLOY_ENV: ${{ github.event.client_payload.environment }}
+  TAG_NAME: ${{ github.event.client_payload.tag_name }}
+  ARTIFACT_NAME: ${{ github.event.client_payload.artifact_name }}
 
 concurrency:
-  group: deploy
+  group: deploy-${{ github.event.client_payload.environment }}
 
 permissions:
   contents: write
@@ -32,40 +35,49 @@ jobs:
           repository: ${{ github.repository }}
           run-id: ${{ github.event.client_payload.artifact_run_id }}
 
-      - name: Set AWS credentials
-        id: aws-auth-config
-        run: |
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> $GITHUB_ENV
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> $GITHUB_ENV
-          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
-
+      # keys only in this step's env, never in $GITHUB_ENV
       - name: Upload latest artifact to S3 storage
         id: artifact-upload-to-s3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
         run: |
-          aws --endpoint-url ${{ secrets.S3_ENDPOINT }} \
-            s3 cp ./${GITHUB_RUN_ID}/${{ github.event.client_payload.artifact_name }} \
-            s3://${{ secrets.S3_BUCKET }}/releases/${{ github.event.client_payload.artifact_name }}
+          endpoint=()
+          [ -n "${S3_ENDPOINT}" ] && endpoint=(--endpoint-url "${S3_ENDPOINT}")
+          aws "${endpoint[@]}" s3 cp "./${GITHUB_RUN_ID}/${ARTIFACT_NAME}" "s3://${S3_BUCKET}/releases/${ARTIFACT_NAME}"
 
-        # python, nginx, redis, rabbitmq event trigger for hetzner.
-        # in aws use s3 events with eventbridge, lambda, ssm.
+        # magenx-deputy-go receiver: numeric timestamp, sha256 of the tar.gz itself
+        # (GitHub's artifact digest is of the zip wrapper, not the file deputy downloads).
+        # Deputy answers after deploy + health check, so wait and never retry (a retry deploys twice).
       - name: Trigger webhook to start deployment
         id: deployment-webhook
+        env:
+          DEPLOY_WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL }}
+          DEPLOY_WEBHOOK_SECRET: ${{ secrets.DEPLOY_WEBHOOK_SECRET }}
+          SIGNATURE_HMAC_KEY: ${{ secrets.SIGNATURE_HMAC_KEY }}
+          WEBHOOK_TIMEOUT: ${{ vars.DEPLOY_WEBHOOK_TIMEOUT || '960' }}
         run: |
           timestamp=$(date -u +%s)
-          webhook_payload=$(jq -n \
-            --arg artifact_name "${{ github.event.client_payload.artifact_name }}" \
-            --arg artifact_digest "${{ github.event.client_payload.artifact_digest }}" \
-            --arg timestamp "$timestamp" \
-            '{artifact_name: $artifact_name, artifact_digest: $artifact_digest, timestamp: $timestamp}')
+          digest="sha256:$(sha256sum "./${GITHUB_RUN_ID}/${ARTIFACT_NAME}" | cut -d' ' -f1)"
+          jq -cn \
+            --arg artifact_name "${ARTIFACT_NAME}" \
+            --arg artifact_digest "${digest}" \
+            --argjson timestamp "${timestamp}" \
+            '{artifact_name: $artifact_name, artifact_digest: $artifact_digest, timestamp: $timestamp}' \
+            | tr -d '\n' > payload.json
 
-          webhook_payload_signature=$(echo -n "$webhook_payload" | openssl dgst -sha256 -hmac "${{ secrets.SIGNATURE_HMAC_KEY }}" | cut -d ' ' -f2)
+          webhook_payload_signature=$(openssl dgst -sha256 -hmac "${SIGNATURE_HMAC_KEY}" -r < payload.json | cut -d' ' -f1)
 
-          curl -X POST "${{ secrets.DEPLOY_WEBHOOK_URL }}" \
+          curl -sS --fail-with-body --max-time "${WEBHOOK_TIMEOUT}" \
+            -X POST "${DEPLOY_WEBHOOK_URL}" \
             -H "Content-Type: application/json" \
-            -H "X-Webhook-Secret: ${{ secrets.DEPLOY_WEBHOOK_SECRET }}" \
-            -H "X-Signature: sha256=$webhook_payload_signature" \
-            -H "X-Timestamp: $timestamp" \
-            --data "$webhook_payload"
+            -H "X-Webhook-Secret: ${DEPLOY_WEBHOOK_SECRET}" \
+            -H "X-Signature: sha256=${webhook_payload_signature}" \
+            -H "X-Timestamp: ${timestamp}" \
+            --data-binary @payload.json
 
       - name: Create comment about deployment status
         id: deployment-status-comment
@@ -73,7 +85,7 @@ jobs:
         run: |
           COMMENT=""
           declare -A step_icons=( ["success"]="✔️" ["failure"]="❌" ["skipped"]="➖"  ["cancelled"]="✖️" )
-          COMMENT+="## ⚠️ ${{ github.event.client_payload.environment }} release ${{ github.event.client_payload.tag_name }} deployment status:\n"
+          COMMENT+="## ⚠️ ${DEPLOY_ENV} release ${TAG_NAME} deployment status:\n"
           COMMENT+="${step_icons[${{ steps.artifact-download.outcome }}]} Download release artifact: ${{ steps.artifact-download.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.artifact-upload-to-s3.outcome }}]} Upload artifact to S3 storage: ${{ steps.artifact-upload-to-s3.outcome }}\n"
           COMMENT+="${step_icons[${{ steps.deployment-webhook.outcome }}]} Deployment event webhook trigger: ${{ steps.deployment-webhook.outcome }}\n"
@@ -88,21 +100,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # production release PR: pending release-please PR whose title has no pre-release suffix
           pr_number=$(gh pr list \
             --repo "${GITHUB_REPOSITORY}" \
             --state open \
             --label "autorelease: pending" \
-            --search "-in:title $PRERELEASE_TYPE" \
-            --json number \
-            --limit 1 \
-            --jq '.[0].number')
+            --json number,title \
+            --jq "[.[] | select(.title | contains(\"-${PRERELEASE_TYPE}\") | not)] | first | .number // empty")
           echo "pr_number=$pr_number" >> ${GITHUB_OUTPUT}
 
       - name: Add comment about deployment status
         id: deployment-status
-        if: ${{ github.event.client_payload.environment == 'staging' && !cancelled() }}
+        if: ${{ github.event.client_payload.environment == 'staging' && !cancelled() && steps.find-pr.outputs.pr_number != '' }}
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr comment ${{ steps.find-pr.outputs.pr_number }} \
           --repo "${GITHUB_REPOSITORY}" \
@@ -125,11 +136,13 @@ jobs:
           --json number,title --jq '.[] | select(.title | startswith("Production release deployment status")) | .number') 
           if [ -n "$EXISTING_ISSUES" ]; then
             echo "$EXISTING_ISSUES" | while read -r issue; do
-              gh issue close "$issue" --comment "new deployment [${{ github.event.client_payload.artifact_name }}]" \
+              gh issue close "$issue" --comment "new deployment [${ARTIFACT_NAME}]" \
                 --reason "not planned" \
                 --repo "${GITHUB_REPOSITORY}"
             done
           fi
+          gh label create "deployment: ${{ job.status }}" --repo "${GITHUB_REPOSITORY}" --force > /dev/null
+          gh label create "release" --repo "${GITHUB_REPOSITORY}" --force > /dev/null
           gh issue create \
             --repo "${GITHUB_REPOSITORY}" \
             --title "Production release deployment status [${{ job.status }}]" \

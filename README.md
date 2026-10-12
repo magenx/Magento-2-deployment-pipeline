@@ -30,7 +30,7 @@ Publishes the official, production-ready release after all tests, approvals, and
 - Documents all tests conducted before a final release
 - Manages comprehensive change documentation automatically
 - Integrates with PR approval workflows for access control
-- Keeps all the wworkflow messages and comments in PR
+- Keeps all the workflow messages and comments in PR
 > To maintain SOC 2 compliance, this template assumes all related testing and publishing workflows also adhere to compliance requirements, and that branch protection rules are properly configured.
 
 ## Workflow Highlights
@@ -71,7 +71,7 @@ Publishes the official, production-ready release after all tests, approvals, and
   - select "Only select repositories"
 - under "Permissions"
   - set "Contents", "Issues" and "Pull requests" to "Read and write"
-- copy the generated token to a new RELEASE_GITHUB_TOKEN repository secret on the Github repository
+- copy the generated token to a new MAGENX_CI_GITHUB_TOKEN repository secret on the Github repository
   
 ## A Better Deployments Pattern  
 > [!TIP]
@@ -95,7 +95,7 @@ Publishes the official, production-ready release after all tests, approvals, and
   
   
 
-## Reposoitory list  
+## Repository list  
 ### Actions  
 - `pagespeed/psi.js`  
   This script runs Google PageSpeed Insights and Chrome UX Report API checks for a given URL, then formats and outputs performance results. It's used in CI/CD workflows to automate website performance analysis and reporting.
@@ -130,9 +130,6 @@ Automatically applies labels to pull requests based on their changes and branch 
 
 - `release.yml`
 Handles pre-release and release automation by creating release pull requests and publishing new tags. Uses release-please to streamline changelog and release process.
-
-- `phpcsfixer.yml`
-Runs PHP syntax and code style checks on changed PHP and PHTML files in pull requests, reporting results using reviewdog. Helps maintain code quality and consistency.
 
 - `release_artifact.yml`
 Syncs build artifacts from prerelease to production releases and triggers deployment notifications. Ensures that production releases contain all necessary build files.

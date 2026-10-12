@@ -36,10 +36,11 @@ runs:
         composer validate --no-check-all --no-check-lock --no-check-publish --no-check-version 
 
     - name: Checkout base branch
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #v7.0.0
       with:
         ref: ${{ inputs.base_ref }}
         path: ${{ inputs.base_path }}
+        persist-credentials: false
 
     - name: Extract require block from base
       id: require-base
@@ -89,7 +90,8 @@ runs:
       id: find-magento-update
       shell: bash
       run: |
-        magento_version_pr="$(grep 'magento/product-community-edition' require_new.txt | awk '{print $2}' || true)"
+        # require.txt holds only added/changed constraints, so this is true only when the version changed
+        magento_version_pr="$(awk '$1 == "magento/product-community-edition" {print $2}' require.txt)"
         if [ -n "$magento_version_pr" ]; then
           echo "⚠️ Magento version update:"
           echo "Version: $magento_version_pr"

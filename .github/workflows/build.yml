@@ -5,7 +5,8 @@ on:
     types: [published]
 
 env:
-  PRELELEASE_TYPE: ${{ vars.PRERELEASE_TYPE }}
+  PRERELEASE_TYPE: ${{ vars.PRERELEASE_TYPE || 'alpha' }}
+  PHP_VERSION: ${{ vars.PHP_VERSION }}
 
 concurrency:
   group: build
@@ -15,6 +16,9 @@ jobs:
   build:
     if: "${{ github.event.release.prerelease == true }}"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: Checkout latest tag
         id: checkout-latest-tag
@@ -22,9 +26,17 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          ref: main
+          # build exactly the tagged commit, not whatever main points to now
+          ref: ${{ github.event.release.tag_name }}
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc #v2.37.1
+        with:
+          php-version: '${{ env.PHP_VERSION }}'
+          extensions: bcmath, ctype, curl, dom, fileinfo, gd, hash, iconv, intl, mbstring, openssl, pdo_mysql, simplexml, soap, sockets, sodium, spl, xmlwriter, xsl, zip
+          tools: composer:v2
 
       - name: Configure Composer cache
         id: composer-cache
@@ -132,19 +144,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # production release PR: pending release-please PR whose title has no pre-release suffix
           pr_number=$(gh pr list \
             --repo "${GITHUB_REPOSITORY}" \
             --state open \
             --label "autorelease: pending" \
-            --search "-in:title ${PRELELEASE_TYPE}" \
-            --json number \
-            --limit 1 \
-            --jq '.[0].number')
+            --json number,title \
+            --jq "[.[] | select(.title | contains(\"-${PRERELEASE_TYPE}\") | not)] | first | .number // empty")
           echo "pr_number=$pr_number" >> ${GITHUB_OUTPUT}
 
       - name: Add status to PR for production release
         id: add-pr-comment
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.find-pr.outputs.pr_number != '' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: | 

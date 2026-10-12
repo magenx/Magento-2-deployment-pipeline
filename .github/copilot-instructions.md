@@ -7,7 +7,7 @@ For every pull request, review all changed PHP and JavaScript files for security
 ## PHP Files
 
 - **Target Version**: PHP 8.3
-- **Target Framework**: Magento 2.4.7
+- **Target Framework**: Magento 2.4.8 (see `magento/product-community-edition` in composer.json)
 - **Check for basic errors and issues:**
   - Flag syntax errors, missing semicolons, unmatched braces, or incomplete statements.
   - Identify undefined variables, functions, or classes.

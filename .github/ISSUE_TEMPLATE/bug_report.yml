@@ -62,6 +62,9 @@ body:
         - label: 'Severity: **S2** _- Affects non-critical data or functionality and forces users to employ a workaround._'
         - label: 'Severity: **S3** _- Affects non-critical data or functionality and does not force users to employ a workaround._'
         - label: 'Severity: **S4** _- Affects aesthetics, professional look and feel, “quality” or “usability”._'
+  - type: checkboxes
+    attributes:
+      label: Code of Conduct
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true

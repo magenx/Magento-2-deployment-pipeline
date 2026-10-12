@@ -10,25 +10,33 @@ on:
         required: true
         type: string
 
+env:
+  TAG_NAME: ${{ github.event.release.tag_name || inputs.tag_name }}
+
 jobs:
   attach-artifact:
     if: "${{ github.event_name == 'workflow_dispatch' || github.event.release.prerelease == false }}"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
     steps:
       - name: Find latest release artifact
         id: find-artifact
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG_NAME="${{ github.event.release.tag_name || inputs.tag_name }}"
-          ARTIFACT_PATTERN="release_.*${TAG_NAME}.tar.gz"
-          ARTIFACT_JSON=$(gh api \
+          # exact name match: release_<date>_<tag>.tar.gz, dots as [.] (no escaping through jq)
+          ARTIFACT_PATTERN="^release_[0-9]+_${TAG_NAME//./[.]}[.]tar[.]gz$"
+          # all pages, not only the 30 newest artifacts; skip expired ones
+          ARTIFACT_JSON=$(gh api --paginate \
           -H "Accept: application/vnd.github+json" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          repos/${{ github.repository }}/actions/artifacts \
-          --jq '[.artifacts[] | select(.name | test("'"$ARTIFACT_PATTERN"'")) | {id, name, archive_download_url, created_at, digest, workflow_run}] | sort_by(.created_at) | last')
+          "repos/${GITHUB_REPOSITORY}/actions/artifacts?per_page=100" \
+          --jq '.artifacts[] | select((.expired | not) and (.name | test("'"$ARTIFACT_PATTERN"'"))) | {id, name, archive_download_url, created_at, digest, workflow_run}' \
+          | jq -s 'sort_by(.created_at) | last')
           
-          if [ "$(echo $ARTIFACT_JSON | jq -r '.id')" == "null" ]; then
+          if [ "$(echo "$ARTIFACT_JSON" | jq -r '.id')" == "null" ]; then
             echo "❌ No artifact found matching pattern: $ARTIFACT_PATTERN"
             exit 1
           fi
@@ -46,7 +54,7 @@ jobs:
         id: artifact-link-to-release
         uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b #v3.0.1
         with:
-          tag_name: "${{ github.event.release.tag_name || inputs.tag_name }}"
+          tag_name: "${{ env.TAG_NAME }}"
           append_body: true
           body: |
             -- 
@@ -66,7 +74,7 @@ jobs:
           -f 'event_type=deployment' \
           -f 'client_payload[environment]=production' \
           -f 'client_payload[artifact_name]=${{ steps.find-artifact.outputs.artifact_name }}' \
-          -f 'client_payload[artifact_url]=${{ steps.find-artifact.outputs.artifact-url }}' \
-          -f 'client_payload[artifact_digest]=${{ steps.find-artifact.outputs.artifact-digest }}' \
-          -F 'client_payload[artifact_run_id]=${{ github.run_id }}' \
-          -f 'client_payload[tag_name]=${{ github.event.release.tag_name }}'
+          -f 'client_payload[artifact_url]=${{ steps.find-artifact.outputs.artifact_url }}' \
+          -f 'client_payload[artifact_digest]=${{ steps.find-artifact.outputs.artifact_digest }}' \
+          -F 'client_payload[artifact_run_id]=${{ steps.find-artifact.outputs.artifact_run_id }}' \
+          -f "client_payload[tag_name]=${TAG_NAME}"

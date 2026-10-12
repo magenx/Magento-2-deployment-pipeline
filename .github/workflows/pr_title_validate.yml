@@ -20,9 +20,14 @@ jobs:
           types: |
             fix
             feat
+            perf
+            refactor
             docs
+            test
+            build
             ci
             chore
+            revert
           requireScope: false
           subjectPattern: ^[A-Z].+$
           subjectPatternError: |
